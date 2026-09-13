@@ -3,91 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZedLinker - Auto Indexing Dashboard</title>
+<title>ZedLinker - ALL IN ONE Indexing V3</title>
 <style>
-body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;margin:0;padding:16px}
-.wrap{max-width:800px;margin:0 auto}
-.card{background:white;border-radius:16px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,.08);margin-bottom:16px}
-h1{font-size:22px;margin:0 0 10px}
-.btn{display:inline-block;background:#111827;color:white;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:700;margin:6px 6px 6px 0;font-size:14px}
-.btn-green{background:#16a34a}
+body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;margin:0;padding:12px}
+.wrap{max-width:850px;margin:0 auto}
+.card{background:white;border-radius:18px;padding:18px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:14px;border:1px solid #eef2f7}
+h1{font-size:22px;margin:4px 0 12px}
+h3{margin:0 0 10px;font-size:18px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
+.tab{padding:10px 14px;border-radius:999px;border:2px solid #e2e8f0;background:white;font-weight:700;font-size:13px;white-space:nowrap;cursor:pointer}
+.tab.active{background:#111827;color:white;border-color:#111827}
+.input{width:100%;padding:14px;border:2px solid #0f172a;border-radius:12px;font-size:15px;box-sizing:border-box;font-weight:600}
+.urlbox{background:#f1f5f9;padding:10px;border-radius:10px;word-break:break-all;font-family:monospace;font-size:13px;margin:10px 0;border:1px dashed #cbd5e1}
+.btn{display:inline-flex;align-items:center;gap:6px;background:#111827;color:white;padding:12px 16px;border-radius:11px;text-decoration:none;font-weight:800;margin:5px 5px 5px 0;font-size:13px;border:none;cursor:pointer}
 .btn-blue{background:#2563eb}
+.btn-green{background:#16a34a}
+.btn-orange{background:#f59e0b;color:#111827}
 .btn-pink{background:#ec4899}
-.input{width:100%;padding:14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;box-sizing:border-box}
-.badge{background:#dcfce7;color:#166534;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
-code{background:#f1f5f9;padding:2px 6px;border-radius:6px;font-size:12px}
-ul{line-height:1.9}
+.btn-outline{background:white;color:#111827;border:2px solid #e2e8f0}
+.small{font-size:11px;color:#64748b;line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<h1>🚀 ZedLinker - Auto Indexing Tool</h1>
-<p>Har naya Product / Group / Channel add karte hi yahan se 1-Click pe Google Indexing karo!</p>
-
-<div class="card">
-<h3>1️⃣ Homepage (Already Done ✅)</h3>
-<p><code>https://zedlinker.store/</code></p>
-<a class="btn btn-green" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2F">✅ Homepage - Request Indexing</a>
-<p style="font-size:12px;color:#64748b">Ye ek baar ho gaya hai - Success hai</p>
+<h1>🚀 ZedLinker V3 - Auto Indexing Dashboard</h1>
+<div class="card" style="background:#fffbeb;border-color:#fde68a">
+<b>🔥 Naya Feature:</b> Ab Products ke sath sath WhatsApp Group, Channel, Telegram Group, Telegram Channel — sab ka 1-Click Indexing + Direct Firebase ID Copy!
 </div>
 
 <div class="card">
-<h3>2️⃣ Naya Product Index Karo - Auto Link Generator</h3>
-<p>Apne product ka ID likho - Jaise <code>m10-earbuds</code></p>
-<input id="pid" class="input" placeholder="Product ID likho... jaise m10-earbuds" value="m10-earbuds">
-<div style="margin-top:12px">
-<p>Product URL: <code id="preview">https://zedlinker.store/product.html?id=m10-earbuds</code></p>
-<a id="btn-index" class="btn btn-blue" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2Fproduct.html%3Fid%3Dm10-earbuds">🔍 Is Product Ko Google Pe Index Karo - 1 Click</a>
-<a id="btn-open" class="btn" target="_blank" href="https://zedlinker.store/product.html?id=m10-earbuds">👁️ Product Dekho</a>
+<h3>📦 Type Select Karo</h3>
+<div class="tabs" id="tabs">
+<button class="tab active" data-type="product">🛒 Product (Daraz)</button>
+<button class="tab" data-type="whatsapp-group">💬 WhatsApp Group</button>
+<button class="tab" data-type="whatsapp-channel">📢 WhatsApp Channel</button>
+<button class="tab" data-type="telegram-group">✈️ Telegram Group</button>
+<button class="tab" data-type="telegram-channel">📡 Telegram Channel</button>
+</div>
+
+<div id="form-area">
+<label style="font-weight:700;font-size:13px;margin-bottom:6px;display:block" id="label">Product ID likho - Firestore se copy karo</label>
+<input id="pid" class="input" placeholder="ID yahan paste karo... jaise igmc5O6EukCooMDvakut" value="igmc5O6EukCooMDvakut">
+
+<div class="grid" style="margin-top:10px">
+<a class="btn btn-outline" target="_blank" id="btn-firebase" href="https://console.firebase.google.com/">🔥 Firebase Firestore Khollo - ID Copy Karo</a>
+<button class="btn btn-outline" id="btn-copy-id">📋 ID Copy Karo</button>
+</div>
+
+<div class="urlbox" id="preview">https://zedlinker.store/product.html?id=igmc5O6EukCooMDvakut</div>
+
+<div>
+<a id="btn-gsc" class="btn btn-blue" target="_blank" href="#">🔍 Google Search Console Me Direct Index Karo - 1 Click</a>
+<a id="btn-open" class="btn btn-green" target="_blank" href="#">👁️ Live Page Khollo</a>
+<a id="btn-ping" class="btn btn-pink" target="_blank" href="data:text/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHVybHNldCB4bWxucz0iaHR0cDovL3d3dy5zaXRlbWFwcy5vcmcvc2NoZW1hcy9zaXRlbWFwLzAuOSI+CiAgPCEtLSBNYWluIFBhZ2VzIC0tPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjEuMDwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI2hvbWU8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4xLjA8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNwbGFuczwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPndlZWtseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4wLjk8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNzdWJtaXQ8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT53ZWVrbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC45PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jYmxvZzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjAuODwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Byb2R1Y3RzPC9sb2M+CiAgICA8bGFzdG1vZD4yMDI2LTA1LTEzPC9sYXN0bW9kPgogICAgPGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC44PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jdmlkZW9kbDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jY29udGFjdDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8IS0tIENhdGVnb3JpZXMgLS0+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1FZHVjYXRpb248L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUVudGVydGFpbm1lbnQ8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUJ1c2luZXNzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1Kb2JzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1UZWNobm9sb2d5PC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1OZXdzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1HYW1pbmc8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIFBsYXRmb3JtIFR5cGVzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9ncm91cDwvbG9jPjxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjc8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9jaGFubmVsPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2dyb3VwPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2NoYW5uZWw8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIExlZ2FsIFBhZ2VzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jcHJpdmFjeTwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Rlcm1zPC9sb2M+PGNoYW5nZWZyZXE+eWVhcmx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjM8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jZGlzY2xhaW1lcjwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KPC91cmxzZXQ+Cg==">📡 Sitemap Ping Karo</a>
+</div>
+
+<p class="small" id="hint">Hint: Firebase > Firestore > products collection > Document ID copy karke yahan paste karo, phir Google pe index dabao. 24h me rank!</p>
 </div>
 </div>
 
 <div class="card">
-<h3>3️⃣ WhatsApp Groups / Channels Auto Indexing</h3>
-<p>Homepage ke sath sath categories bhi index karo taaki groups fast rank karen</p>
-<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2F%3Fcategory%3DEducation">📚 Education Groups Index</a>
-<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2F%3Fcategory%3DEarning">💰 Earning Groups Index</a>
-<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2F%3Fcategory%3DTechnology">💻 Technology Groups Index</a>
-<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2Fshop">🛒 Shop Page Index</a>
+<h3>📋 Quick Actions</h3>
+<div class="grid">
+<div>
+<b>🛒 Products Ke Liye:</b><br>
+<a class="btn btn-outline" target="_blank" href="https://console.firebase.google.com/project/_/firestore/data/~2Fproducts">🔥 Products Firestore Khollo</a><br>
+<span class="small">products collection > ID copy > upar paste > Index</span>
+</div>
+<div>
+<b>💬 Links (Groups/Channels) Ke Liye:</b><br>
+<a class="btn btn-outline" target="_blank" href="https://console.firebase.google.com/project/_/firestore/data/~2Flinks">🔥 Links Firestore Khollo</a><br>
+<span class="small">links collection > WhatsApp/Telegram ID copy > upar Type select karke paste > Index</span>
+</div>
+</div>
 </div>
 
 <div class="card">
-<h3>4️⃣ Sitemap Ping - Google Ko Batao Naya Product Aaya Hai</h3>
-<p>Har product add ke baad ye button dabao - Google sitemap auto crawl karega</p>
-<a class="btn btn-pink" target="_blank" href="data:text/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHVybHNldCB4bWxucz0iaHR0cDovL3d3dy5zaXRlbWFwcy5vcmcvc2NoZW1hcy9zaXRlbWFwLzAuOSI+CiAgPCEtLSBNYWluIFBhZ2VzIC0tPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjEuMDwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI2hvbWU8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4xLjA8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNwbGFuczwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPndlZWtseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4wLjk8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNzdWJtaXQ8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT53ZWVrbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC45PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jYmxvZzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjAuODwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Byb2R1Y3RzPC9sb2M+CiAgICA8bGFzdG1vZD4yMDI2LTA1LTEzPC9sYXN0bW9kPgogICAgPGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC44PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jdmlkZW9kbDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jY29udGFjdDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8IS0tIENhdGVnb3JpZXMgLS0+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1FZHVjYXRpb248L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUVudGVydGFpbm1lbnQ8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUJ1c2luZXNzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1Kb2JzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1UZWNobm9sb2d5PC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1OZXdzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1HYW1pbmc8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIFBsYXRmb3JtIFR5cGVzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9ncm91cDwvbG9jPjxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjc8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9jaGFubmVsPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2dyb3VwPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2NoYW5uZWw8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIExlZ2FsIFBhZ2VzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jcHJpdmFjeTwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Rlcm1zPC9sb2M+PGNoYW5nZWZyZXE+eWVhcmx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjM8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jZGlzY2xhaW1lcjwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KPC91cmxzZXQ+Cg==">📡 Sitemap Google Ko Ping Karo</a>
-<a class="btn" target="_blank" href="data:text/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHVybHNldCB4bWxucz0iaHR0cDovL3d3dy5zaXRlbWFwcy5vcmcvc2NoZW1hcy9zaXRlbWFwLzAuOSI+CiAgPCEtLSBNYWluIFBhZ2VzIC0tPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjEuMDwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI2hvbWU8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4xLjA8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNwbGFuczwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPndlZWtseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4wLjk8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNzdWJtaXQ8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT53ZWVrbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC45PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jYmxvZzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjAuODwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Byb2R1Y3RzPC9sb2M+CiAgICA8bGFzdG1vZD4yMDI2LTA1LTEzPC9sYXN0bW9kPgogICAgPGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC44PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jdmlkZW9kbDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jY29udGFjdDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8IS0tIENhdGVnb3JpZXMgLS0+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1FZHVjYXRpb248L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUVudGVydGFpbm1lbnQ8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUJ1c2luZXNzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1Kb2JzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1UZWNobm9sb2d5PC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1OZXdzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1HYW1pbmc8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIFBsYXRmb3JtIFR5cGVzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9ncm91cDwvbG9jPjxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjc8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9jaGFubmVsPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2dyb3VwPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2NoYW5uZWw8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIExlZ2FsIFBhZ2VzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jcHJpdmFjeTwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Rlcm1zPC9sb2M+PGNoYW5nZWZyZXE+eWVhcmx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjM8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jZGlzY2xhaW1lcjwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KPC91cmxzZXQ+Cg==">🗺️ Sitemap Dekho</a>
-</div>
-
-<div class="card">
-<h3>✅ Daily Routine (2 Minute):</h3>
-<ul>
-<li>Naya Product Add Karo Admin se</li>
-<li>Yahan ID likho → <b>Index Karo</b> dabao → Google Search Console khulega</li>
-<li>Wahan <b>REQUEST INDEXING</b> dabao → DONE! 24h me Google pe!</li>
-</ul>
-<p><span class="badge">Tip</span> Roz 1 product ka indexing karo - Google aapki site ko active samjhega aur FAST rank dega!</p>
+<h3>⚡ Auto Links - Sab Categories 1-Click Index</h3>
+<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2F">🏠 Homepage Index</a>
+<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2Fshop">🛒 Shop Index</a>
+<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2Findexing.html">🗂️ Indexing Tool Khud Ko Index Karo</a>
+<a class="btn btn-pink" target="_blank" href="data:text/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHVybHNldCB4bWxucz0iaHR0cDovL3d3dy5zaXRlbWFwcy5vcmcvc2NoZW1hcy9zaXRlbWFwLzAuOSI+CiAgPCEtLSBNYWluIFBhZ2VzIC0tPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjEuMDwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI2hvbWU8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4xLjA8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNwbGFuczwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPndlZWtseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4wLjk8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNzdWJtaXQ8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT53ZWVrbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC45PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jYmxvZzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjAuODwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Byb2R1Y3RzPC9sb2M+CiAgICA8bGFzdG1vZD4yMDI2LTA1LTEzPC9sYXN0bW9kPgogICAgPGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC44PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jdmlkZW9kbDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jY29udGFjdDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8IS0tIENhdGVnb3JpZXMgLS0+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1FZHVjYXRpb248L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUVudGVydGFpbm1lbnQ8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUJ1c2luZXNzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1Kb2JzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1UZWNobm9sb2d5PC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1OZXdzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1HYW1pbmc8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIFBsYXRmb3JtIFR5cGVzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9ncm91cDwvbG9jPjxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjc8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9jaGFubmVsPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2dyb3VwPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2NoYW5uZWw8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIExlZ2FsIFBhZ2VzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jcHJpdmFjeTwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Rlcm1zPC9sb2M+PGNoYW5nZWZyZXE+eWVhcmx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjM8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jZGlzY2xhaW1lcjwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KPC91cmxzZXQ+Cg==">📡 Full Sitemap Ping</a>
 </div>
 
 </div>
 
 <script>
-const pidInput = document.getElementById('pid');
-const preview = document.getElementById('preview');
-const btnIndex = document.getElementById('btn-index');
-const btnOpen = document.getElementById('btn-open');
+const configs = {
+  "product": { label: "Product ID likho - Firestore products se copy karo", base: "https://zedlinker.store/product.html?id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Fproducts", hint: "Firebase > Firestore > products > Document ID copy karo > yahan paste > Google Index dabao. 24h me rank!" },
+  "whatsapp-group": { label: "WhatsApp Group ID likho - Firestore links se copy karo", base: "https://zedlinker.store/?type=whatsapp-group&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "Links collection me WhatsApp Group ka ID copy karo. URL banega ?type=whatsapp-group&id=XXX - Google pe alag rank hoga!" },
+  "whatsapp-channel": { label: "WhatsApp Channel ID likho", base: "https://zedlinker.store/?type=whatsapp-channel&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "WhatsApp Channel ID copy karo - Direct indexing se Channel fast rank karega!" },
+  "telegram-group": { label: "Telegram Group ID likho", base: "https://zedlinker.store/?type=telegram-group&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "Telegram Group ID copy karo - Telegram groups Pakistan me high search hai!" },
+  "telegram-channel": { label: "Telegram Channel ID likho", base: "https://zedlinker.store/?type=telegram-channel&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "Telegram Channel ID copy karo - 1 click me index!" }
+};
 
-function updateLinks(){
-  let id = pidInput.value.trim() || 'm10-earbuds';
-  id = id.replace(/\s+/g,'-').toLowerCase();
-  const url = `https://zedlinker.store/product.html?id=${id}`;
+let currentType = 'product';
+const tabs = document.querySelectorAll('.tab');
+const pid = document.getElementById('pid');
+const preview = document.getElementById('preview');
+const btnGsc = document.getElementById('btn-gsc');
+const btnOpen = document.getElementById('btn-open');
+const btnFirebase = document.getElementById('btn-firebase');
+const label = document.getElementById('label');
+const hint = document.getElementById('hint');
+
+function updateAll(){
+  const conf = configs[currentType];
+  let id = pid.value.trim();
+  if(!id) id = 'test-id';
+  const url = conf.base + encodeURIComponent(id);
   const encoded = encodeURIComponent(url);
   const gsc = `https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=${encoded}`;
-  preview.innerText = url;
-  btnIndex.href = gsc;
+  preview.textContent = url;
+  btnGsc.href = gsc;
   btnOpen.href = url;
+  btnFirebase.href = conf.firestore;
+  label.textContent = conf.label;
+  hint.textContent = conf.hint;
 }
-pidInput.addEventListener('input', updateLinks);
-updateLinks();
+
+tabs.forEach(t=>{
+  t.addEventListener('click', ()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    currentType = t.dataset.type;
+    updateAll();
+  });
+});
+
+pid.addEventListener('input', updateAll);
+
+document.getElementById('btn-copy-id').addEventListener('click', ()=>{
+  navigator.clipboard.writeText(pid.value.trim());
+  alert('ID Copied: ' + pid.value.trim());
+});
+
+updateAll();
 </script>
 </body>
 </html>
