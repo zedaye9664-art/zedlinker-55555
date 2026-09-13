@@ -1,70 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Main Pages -->
-  <url>
-    <loc>https://zedlinker.store/</loc>
-    <lastmod>2026-05-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://zedlinker.store/#home</loc>
-    <lastmod>2026-05-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://zedlinker.store/#plans</loc>
-    <lastmod>2026-05-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://zedlinker.store/#submit</loc>
-    <lastmod>2026-05-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://zedlinker.store/#blog</loc>
-    <lastmod>2026-05-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://zedlinker.store/#products</loc>
-    <lastmod>2026-05-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://zedlinker.store/#videodl</loc>
-    <lastmod>2026-05-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://zedlinker.store/#contact</loc>
-    <lastmod>2026-05-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <!-- Categories -->
-  <url><loc>https://zedlinker.store/?category=Education</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://zedlinker.store/?category=Entertainment</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://zedlinker.store/?category=Business</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://zedlinker.store/?category=Jobs</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://zedlinker.store/?category=Technology</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://zedlinker.store/?category=News</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://zedlinker.store/?category=Gaming</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <!-- Platform Types -->
-  <url><loc>https://zedlinker.store/?type=whatsapp_group</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://zedlinker.store/?type=whatsapp_channel</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://zedlinker.store/?type=telegram_group</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://zedlinker.store/?type=telegram_channel</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <!-- Legal Pages -->
-  <url><loc>https://zedlinker.store/#privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://zedlinker.store/#terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://zedlinker.store/#disclaimer</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://zedlinker.store/</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://zedlinker.store/?category=Education</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=Entertainment</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=Business</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=Jobs</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=Technology</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=News</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=Gaming</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?type=whatsapp_group</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?type=whatsapp_channel</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?type=telegram_group</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?type=telegram_channel</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
 </urlset>
-                                           
