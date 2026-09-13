@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZedLinker - Auto Indexing Dashboard</title>
+<style>
+body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;margin:0;padding:16px}
+.wrap{max-width:800px;margin:0 auto}
+.card{background:white;border-radius:16px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,.08);margin-bottom:16px}
+h1{font-size:22px;margin:0 0 10px}
+.btn{display:inline-block;background:#111827;color:white;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:700;margin:6px 6px 6px 0;font-size:14px}
+.btn-green{background:#16a34a}
+.btn-blue{background:#2563eb}
+.btn-pink{background:#ec4899}
+.input{width:100%;padding:14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;box-sizing:border-box}
+.badge{background:#dcfce7;color:#166534;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
+code{background:#f1f5f9;padding:2px 6px;border-radius:6px;font-size:12px}
+ul{line-height:1.9}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🚀 ZedLinker - Auto Indexing Tool</h1>
+<p>Har naya Product / Group / Channel add karte hi yahan se 1-Click pe Google Indexing karo!</p>
+
+<div class="card">
+<h3>1️⃣ Homepage (Already Done ✅)</h3>
+<p><code>https://zedlinker.store/</code></p>
+<a class="btn btn-green" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2F">✅ Homepage - Request Indexing</a>
+<p style="font-size:12px;color:#64748b">Ye ek baar ho gaya hai - Success hai</p>
+</div>
+
+<div class="card">
+<h3>2️⃣ Naya Product Index Karo - Auto Link Generator</h3>
+<p>Apne product ka ID likho - Jaise <code>m10-earbuds</code></p>
+<input id="pid" class="input" placeholder="Product ID likho... jaise m10-earbuds" value="m10-earbuds">
+<div style="margin-top:12px">
+<p>Product URL: <code id="preview">https://zedlinker.store/product.html?id=m10-earbuds</code></p>
+<a id="btn-index" class="btn btn-blue" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2Fproduct.html%3Fid%3Dm10-earbuds">🔍 Is Product Ko Google Pe Index Karo - 1 Click</a>
+<a id="btn-open" class="btn" target="_blank" href="https://zedlinker.store/product.html?id=m10-earbuds">👁️ Product Dekho</a>
+</div>
+</div>
+
+<div class="card">
+<h3>3️⃣ WhatsApp Groups / Channels Auto Indexing</h3>
+<p>Homepage ke sath sath categories bhi index karo taaki groups fast rank karen</p>
+<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2F%3Fcategory%3DEducation">📚 Education Groups Index</a>
+<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2F%3Fcategory%3DEarning">💰 Earning Groups Index</a>
+<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2F%3Fcategory%3DTechnology">💻 Technology Groups Index</a>
+<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2Fshop">🛒 Shop Page Index</a>
+</div>
+
+<div class="card">
+<h3>4️⃣ Sitemap Ping - Google Ko Batao Naya Product Aaya Hai</h3>
+<p>Har product add ke baad ye button dabao - Google sitemap auto crawl karega</p>
+<a class="btn btn-pink" target="_blank" href="data:text/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHVybHNldCB4bWxucz0iaHR0cDovL3d3dy5zaXRlbWFwcy5vcmcvc2NoZW1hcy9zaXRlbWFwLzAuOSI+CiAgPCEtLSBNYWluIFBhZ2VzIC0tPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjEuMDwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI2hvbWU8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4xLjA8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNwbGFuczwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPndlZWtseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4wLjk8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNzdWJtaXQ8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT53ZWVrbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC45PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jYmxvZzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjAuODwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Byb2R1Y3RzPC9sb2M+CiAgICA8bGFzdG1vZD4yMDI2LTA1LTEzPC9sYXN0bW9kPgogICAgPGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC44PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jdmlkZW9kbDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jY29udGFjdDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8IS0tIENhdGVnb3JpZXMgLS0+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1FZHVjYXRpb248L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUVudGVydGFpbm1lbnQ8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUJ1c2luZXNzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1Kb2JzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1UZWNobm9sb2d5PC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1OZXdzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1HYW1pbmc8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIFBsYXRmb3JtIFR5cGVzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9ncm91cDwvbG9jPjxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjc8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9jaGFubmVsPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2dyb3VwPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2NoYW5uZWw8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIExlZ2FsIFBhZ2VzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jcHJpdmFjeTwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Rlcm1zPC9sb2M+PGNoYW5nZWZyZXE+eWVhcmx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjM8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jZGlzY2xhaW1lcjwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KPC91cmxzZXQ+Cg==">📡 Sitemap Google Ko Ping Karo</a>
+<a class="btn" target="_blank" href="data:text/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHVybHNldCB4bWxucz0iaHR0cDovL3d3dy5zaXRlbWFwcy5vcmcvc2NoZW1hcy9zaXRlbWFwLzAuOSI+CiAgPCEtLSBNYWluIFBhZ2VzIC0tPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjEuMDwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI2hvbWU8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4xLjA8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNwbGFuczwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPndlZWtseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4wLjk8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNzdWJtaXQ8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT53ZWVrbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC45PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jYmxvZzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjAuODwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Byb2R1Y3RzPC9sb2M+CiAgICA8bGFzdG1vZD4yMDI2LTA1LTEzPC9sYXN0bW9kPgogICAgPGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC44PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jdmlkZW9kbDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jY29udGFjdDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8IS0tIENhdGVnb3JpZXMgLS0+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1FZHVjYXRpb248L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUVudGVydGFpbm1lbnQ8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUJ1c2luZXNzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1Kb2JzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1UZWNobm9sb2d5PC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1OZXdzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1HYW1pbmc8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIFBsYXRmb3JtIFR5cGVzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9ncm91cDwvbG9jPjxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjc8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9jaGFubmVsPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2dyb3VwPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2NoYW5uZWw8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIExlZ2FsIFBhZ2VzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jcHJpdmFjeTwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Rlcm1zPC9sb2M+PGNoYW5nZWZyZXE+eWVhcmx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjM8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jZGlzY2xhaW1lcjwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KPC91cmxzZXQ+Cg==">🗺️ Sitemap Dekho</a>
+</div>
+
+<div class="card">
+<h3>✅ Daily Routine (2 Minute):</h3>
+<ul>
+<li>Naya Product Add Karo Admin se</li>
+<li>Yahan ID likho → <b>Index Karo</b> dabao → Google Search Console khulega</li>
+<li>Wahan <b>REQUEST INDEXING</b> dabao → DONE! 24h me Google pe!</li>
+</ul>
+<p><span class="badge">Tip</span> Roz 1 product ka indexing karo - Google aapki site ko active samjhega aur FAST rank dega!</p>
+</div>
+
+</div>
+
+<script>
+const pidInput = document.getElementById('pid');
+const preview = document.getElementById('preview');
+const btnIndex = document.getElementById('btn-index');
+const btnOpen = document.getElementById('btn-open');
+
+function updateLinks(){
+  let id = pidInput.value.trim() || 'm10-earbuds';
+  id = id.replace(/\s+/g,'-').toLowerCase();
+  const url = `https://zedlinker.store/product.html?id=${id}`;
+  const encoded = encodeURIComponent(url);
+  const gsc = `https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=${encoded}`;
+  preview.innerText = url;
+  btnIndex.href = gsc;
+  btnOpen.href = url;
+}
+pidInput.addEventListener('input', updateLinks);
+updateLinks();
+</script>
+</body>
+</html>
