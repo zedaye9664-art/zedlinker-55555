@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZedLinker - ALL IN ONE Indexing V3</title>
+<title>ZedLinker V5 - Auto Live Dashboard - New Links Top</title>
 <style>
 body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;margin:0;padding:12px}
-.wrap{max-width:850px;margin:0 auto}
+.wrap{max-width:900px;margin:0 auto}
 .card{background:white;border-radius:18px;padding:18px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:14px;border:1px solid #eef2f7}
 h1{font-size:22px;margin:4px 0 12px}
 h3{margin:0 0 10px;font-size:18px}
@@ -24,17 +24,40 @@ h3{margin:0 0 10px;font-size:18px}
 .small{font-size:11px;color:#64748b;line-height:1.5}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
+.live-item{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #eef2f7;border-radius:12px;margin-bottom:8px;background:white;cursor:pointer;transition:.2s}
+.live-item:hover{border-color:#111827;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.live-item .badge{font-size:10px;font-weight:900;padding:4px 8px;border-radius:999px;white-space:nowrap}
+.badge-wg{background:#dcfce7;color:#166534}
+.badge-wc{background:#dbeafe;color:#1e40af}
+.badge-tg{background:#e0e7ff;color:#4338ca}
+.badge-tc{background:#f3e8ff;color:#6b21a8}
+.badge-prod{background:#fef3c7;color:#92400e}
+.badge-blog{background:#fce7f3;color:#9d174d}
+.badge-ad{background:#ffedd5;color:#9a3412}
+.live-id{font-family:monospace;font-size:11px;color:#64748b;background:#f1f5f9;padding:2px 6px;border-radius:6px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.live-title{font-weight:700;font-size:13px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.new-dot{width:8px;height:8px;background:#ef4444;border-radius:50%;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<h1>🚀 ZedLinker V4 - Auto Indexing Dashboard + Blog ID Maker</h1>
+<h1>🚀 ZedLinker V5 - Auto Live Indexing Dashboard</h1>
 <div class="card" style="background:#fffbeb;border-color:#fde68a">
-<b>🔥 Naya Feature:</b> Ab Products, WhatsApp Group, Channel, Telegram Group, Telegram Channel, AUR Naya Blog ID Maker — sab ka 1-Click Indexing + Direct Firebase ID Copy!
+<b>🔥 Auto Live:</b> Ab Firebase kholne ki zarurat nahi! Neeche <b>New Approved Links Top Pe</b> auto show ho rahe hain — WhatsApp Group/Channel, Telegram Group/Channel, Products (title), Blogs (title), Ads — sab ka ID + Name direct! Click karo → Link banega → 1-Click Google Index!
+</div>
+
+<!-- AUTO LIVE LIST - NEW TOP -->
+<div class="card" id="live-card">
+<h3>⚡ Live Approved - New Top Pe (Auto) <span id="live-count" style="background:#111827;color:white;padding:2px 8px;border-radius:999px;font-size:11px">Loading...</span></h3>
+<div class="small" style="margin-bottom:10px">Firebase se live aa raha hai — naya approve karte hi yahan top pe ayega. Click karo to ID auto fill hoga.</div>
+<div id="live-list">
+<div class="small" style="padding:20px;text-align:center">🔄 Firebase se loading... 2 second...</div>
+</div>
 </div>
 
 <div class="card">
-<h3>📦 Type Select Karo</h3>
+<h3>📦 Type Select Karo (Manual Bhi)</h3>
 <div class="tabs" id="tabs">
 <button class="tab active" data-type="product">🛒 Product (Daraz)</button>
 <button class="tab" data-type="whatsapp-group">💬 WhatsApp Group</button>
@@ -42,63 +65,67 @@ h3{margin:0 0 10px;font-size:18px}
 <button class="tab" data-type="telegram-group">✈️ Telegram Group</button>
 <button class="tab" data-type="telegram-channel">📡 Telegram Channel</button>
 <button class="tab" data-type="blog">📝 Blog</button>
+<button class="tab" data-type="ad">📢 Ad</button>
 </div>
 
 <div id="form-area">
 <label style="font-weight:700;font-size:13px;margin-bottom:6px;display:block" id="label">Product ID likho - Firestore se copy karo</label>
-<input id="pid" class="input" placeholder="ID yahan paste karo... jaise igmc5O6EukCooMDvakut" value="igmc5O6EukCooMDvakut">
+<input id="pid" class="input" placeholder="ID yahan paste karo... jaise igmc5O6EukCooMDvakut" value="">
 
 <div class="grid" style="margin-top:10px">
-<a class="btn btn-outline" target="_blank" id="btn-firebase" href="https://console.firebase.google.com/">🔥 Firebase Firestore Khollo - ID Copy Karo</a>
+<a class="btn btn-outline" target="_blank" id="btn-firebase" href="https://console.firebase.google.com/">🔥 Firebase Firestore Khollo</a>
 <button class="btn btn-outline" id="btn-copy-id">📋 ID Copy Karo</button>
 </div>
 
-<div class="urlbox" id="preview">https://zedlinker.store/product.html?id=igmc5O6EukCooMDvakut</div>
+<div class="urlbox" id="preview">https://zedlinker.store/product.html?id=</div>
+<div id="selected-info" style="background:#f0fdf4;border:1px solid #bbf7d0;padding:8px 12px;border-radius:10px;font-size:12px;margin-bottom:10px;display:none">
+<span style="font-weight:800">Selected:</span> <span id="selected-text"></span>
+</div>
 
 <div>
 <a id="btn-gsc" class="btn btn-blue" target="_blank" href="#">🔍 Google Search Console Me Direct Index Karo - 1 Click</a>
 <a id="btn-open" class="btn btn-green" target="_blank" href="#">👁️ Live Page Khollo</a>
-<a id="btn-ping" class="btn btn-pink" target="_blank" href="data:text/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHVybHNldCB4bWxucz0iaHR0cDovL3d3dy5zaXRlbWFwcy5vcmcvc2NoZW1hcy9zaXRlbWFwLzAuOSI+CiAgPCEtLSBNYWluIFBhZ2VzIC0tPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjEuMDwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI2hvbWU8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4xLjA8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNwbGFuczwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPndlZWtseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4wLjk8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNzdWJtaXQ8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT53ZWVrbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC45PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jYmxvZzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjAuODwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Byb2R1Y3RzPC9sb2M+CiAgICA8bGFzdG1vZD4yMDI2LTA1LTEzPC9sYXN0bW9kPgogICAgPGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC44PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jdmlkZW9kbDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jY29udGFjdDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8IS0tIENhdGVnb3JpZXMgLS0+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1FZHVjYXRpb248L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUVudGVydGFpbm1lbnQ8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUJ1c2luZXNzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1Kb2JzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1UZWNobm9sb2d5PC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1OZXdzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1HYW1pbmc8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIFBsYXRmb3JtIFR5cGVzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9ncm91cDwvbG9jPjxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjc8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9jaGFubmVsPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2dyb3VwPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2NoYW5uZWw8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIExlZ2FsIFBhZ2VzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jcHJpdmFjeTwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Rlcm1zPC9sb2M+PGNoYW5nZWZyZXE+eWVhcmx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjM8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jZGlzY2xhaW1lcjwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KPC91cmxzZXQ+Cg==">📡 Sitemap Ping Karo</a>
+<a id="btn-bing" class="btn btn-orange" target="_blank" href="#">🚀 Bing IndexNow Ping</a>
 </div>
 
-<p class="small" id="hint">Hint: Firebase > Firestore > products collection > Document ID copy karke yahan paste karo, phir Google pe index dabao. 24h me rank!</p>
-</div>
-</div>
-
-<div class="card">
-<h3>📋 Quick Actions</h3>
-<div class="grid">
-<div>
-<b>🛒 Products Ke Liye:</b><br>
-<a class="btn btn-outline" target="_blank" href="https://console.firebase.google.com/project/_/firestore/data/~2Fproducts">🔥 Products Firestore Khollo</a><br>
-<span class="small">products collection > ID copy > upar paste > Index</span>
-</div>
-<div>
-<b>💬 Links (Groups/Channels) Ke Liye:</b><br>
-<a class="btn btn-outline" target="_blank" href="https://console.firebase.google.com/project/_/firestore/data/~2Flinks">🔥 Links Firestore Khollo</a><br>
-<span class="small">links collection > WhatsApp/Telegram ID copy > upar Type select karke paste > Index</span>
-</div>
+<div class="small" id="hint" style="margin-top:12px"></div>
 </div>
 </div>
 
 <div class="card">
-<h3>⚡ Auto Links - Sab Categories 1-Click Index</h3>
-<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2F">🏠 Homepage Index</a>
-<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2Fshop">🛒 Shop Index</a>
-<a class="btn" target="_blank" href="https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=https%3A%2F%2Fzedlinker.store%2Findexing.html">🗂️ Indexing Tool Khud Ko Index Karo</a>
-<a class="btn btn-pink" target="_blank" href="data:text/xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHVybHNldCB4bWxucz0iaHR0cDovL3d3dy5zaXRlbWFwcy5vcmcvc2NoZW1hcy9zaXRlbWFwLzAuOSI+CiAgPCEtLSBNYWluIFBhZ2VzIC0tPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjEuMDwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI2hvbWU8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4xLjA8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNwbGFuczwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPndlZWtseTwvY2hhbmdlZnJlcT4KICAgIDxwcmlvcml0eT4wLjk8L3ByaW9yaXR5PgogIDwvdXJsPgogIDx1cmw+CiAgICA8bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLyNzdWJtaXQ8L2xvYz4KICAgIDxsYXN0bW9kPjIwMjYtMDUtMTM8L2xhc3Rtb2Q+CiAgICA8Y2hhbmdlZnJlcT53ZWVrbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC45PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jYmxvZzwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPgogICAgPHByaW9yaXR5PjAuODwvcHJpb3JpdHk+CiAgPC91cmw+CiAgPHVybD4KICAgIDxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Byb2R1Y3RzPC9sb2M+CiAgICA8bGFzdG1vZD4yMDI2LTA1LTEzPC9sYXN0bW9kPgogICAgPGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC44PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jdmlkZW9kbDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8dXJsPgogICAgPGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jY29udGFjdDwvbG9jPgogICAgPGxhc3Rtb2Q+MjAyNi0wNS0xMzwvbGFzdG1vZD4KICAgIDxjaGFuZ2VmcmVxPm1vbnRobHk8L2NoYW5nZWZyZXE+CiAgICA8cHJpb3JpdHk+MC42PC9wcmlvcml0eT4KICA8L3VybD4KICA8IS0tIENhdGVnb3JpZXMgLS0+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1FZHVjYXRpb248L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUVudGVydGFpbm1lbnQ8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvP2NhdGVnb3J5PUJ1c2luZXNzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1Kb2JzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1UZWNobm9sb2d5PC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1OZXdzPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz9jYXRlZ29yeT1HYW1pbmc8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIFBsYXRmb3JtIFR5cGVzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9ncm91cDwvbG9jPjxjaGFuZ2VmcmVxPmRhaWx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjc8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8/dHlwZT13aGF0c2FwcF9jaGFubmVsPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2dyb3VwPC9sb2M+PGNoYW5nZWZyZXE+ZGFpbHk8L2NoYW5nZWZyZXE+PHByaW9yaXR5PjAuNzwvcHJpb3JpdHk+PC91cmw+CiAgPHVybD48bG9jPmh0dHBzOi8vemVkbGlua2VyLnN0b3JlLz90eXBlPXRlbGVncmFtX2NoYW5uZWw8L2xvYz48Y2hhbmdlZnJlcT5kYWlseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC43PC9wcmlvcml0eT48L3VybD4KICA8IS0tIExlZ2FsIFBhZ2VzIC0tPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jcHJpdmFjeTwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KICA8dXJsPjxsb2M+aHR0cHM6Ly96ZWRsaW5rZXIuc3RvcmUvI3Rlcm1zPC9sb2M+PGNoYW5nZWZyZXE+eWVhcmx5PC9jaGFuZ2VmcmVxPjxwcmlvcml0eT4wLjM8L3ByaW9yaXR5PjwvdXJsPgogIDx1cmw+PGxvYz5odHRwczovL3plZGxpbmtlci5zdG9yZS8jZGlzY2xhaW1lcjwvbG9jPjxjaGFuZ2VmcmVxPnllYXJseTwvY2hhbmdlZnJlcT48cHJpb3JpdHk+MC4zPC9wcmlvcml0eT48L3VybD4KPC91cmxzZXQ+Cg==">📡 Full Sitemap Ping</a>
+<h3>📌 SEO Tips</h3>
+<div class="small">
+- Naya link approve karte hi yahan top pe ayega (Newest First).<br>
+- WhatsApp Group/Channel ka <b>name</b>, Blog/Product ka <b>title</b> sath show hoga — Firebase jaisa.<br>
+- Click karo → ID auto fill → GSC button se index karo.<br>
+- Har roz 5-10 index karo, 24h me Google rank karega!
+</div>
+</div>
 </div>
 
-</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getFirestore, collection, query, where, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBADCK9FGULv7NPzMitfNq-_Wh8LFjf4nk",
+  authDomain: "zedlinker-55555.firebaseapp.com",
+  projectId: "zedlinker-55555",
+  storageBucket: "zedlinker-55555.firebasestorage.app",
+  messagingSenderId: "710796734605",
+  appId: "1:710796734605:web:fc6be519c1876fa77a32c4"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const configs = {
-  "product": { label: "Product ID likho - Firestore products se copy karo", base: "https://zedlinker.store/product.html?id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Fproducts", hint: "Firebase > Firestore > products > Document ID copy karo > yahan paste > Google Index dabao. 24h me rank!" },
-  "whatsapp-group": { label: "WhatsApp Group ID likho - Firestore links se copy karo", base: "https://zedlinker.store/?type=whatsapp-group&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "Links collection me WhatsApp Group ka ID copy karo. URL banega ?type=whatsapp-group&id=XXX - Google pe alag rank hoga!" },
-  "whatsapp-channel": { label: "WhatsApp Channel ID likho", base: "https://zedlinker.store/?type=whatsapp-channel&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "WhatsApp Channel ID copy karo - Direct indexing se Channel fast rank karega!" },
-  "telegram-group": { label: "Telegram Group ID likho", base: "https://zedlinker.store/?type=telegram-group&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "Telegram Group ID copy karo - Telegram groups Pakistan me high search hai!" },
-  "telegram-channel": { label: "Telegram Channel ID likho", base: "https://zedlinker.store/?type=telegram-channel&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "Telegram Channel ID copy karo - 1 click me index!" },
-  "blog": { label: "Blog ID likho - Firestore blogs se copy karo", base: "https://zedlinker.store/?type=blog&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Fblogs", hint: "Firebase > Firestore > blogs > Document ID copy karo > yahan paste karo > Blog ka link banega ?type=blog&id=XXX - Google Search Console me 1 click me index karo! 24h me rank!" }
+  "product": { label: "Product ID likho - Firestore products se copy karo", base: "https://zedlinker.store/product.html?id=", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Fproducts", hint: "Products ka title yahan show hoga. Click se auto fill!" },
+  "whatsapp-group": { label: "WhatsApp Group ID likho", base: "https://zedlinker.store/?type=whatsapp-group&id=", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "WhatsApp Group ka name show hoga. Top pe naya wala!" },
+  "whatsapp-channel": { label: "WhatsApp Channel ID likho", base: "https://zedlinker.store/?type=whatsapp-channel&id=", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "Channel name ke sath top pe!" },
+  "telegram-group": { label: "Telegram Group ID likho", base: "https://zedlinker.store/?type=telegram-group&id=", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "Telegram Group name ke sath!" },
+  "telegram-channel": { label: "Telegram Channel ID likho", base: "https://zedlinker.store/?type=telegram-channel&id=", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "Telegram Channel name ke sath!" },
+  "blog": { label: "Blog ID likho - Firestore blogs se copy karo", base: "https://zedlinker.store/?type=blog&id=", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Fblogs", hint: "Blog ka title show hoga — direct!" },
+  "ad": { label: "Ad ID likho - Firestore ads se copy karo", base: "https://zedlinker.store/?type=ad&id=", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Fads", hint: "Ad ka title + WhatsApp show hoga!" }
 };
 
 let currentType = 'product';
@@ -107,6 +134,7 @@ const pid = document.getElementById('pid');
 const preview = document.getElementById('preview');
 const btnGsc = document.getElementById('btn-gsc');
 const btnOpen = document.getElementById('btn-open');
+const btnBing = document.getElementById('btn-bing');
 const btnFirebase = document.getElementById('btn-firebase');
 const label = document.getElementById('label');
 const hint = document.getElementById('hint');
@@ -114,16 +142,28 @@ const hint = document.getElementById('hint');
 function updateAll(){
   const conf = configs[currentType];
   let id = pid.value.trim();
-  if(!id) id = 'test-id';
-  const url = conf.base + encodeURIComponent(id);
+  if(!id) id = '';
+  const url = id ? conf.base + encodeURIComponent(id) : conf.base;
   const encoded = encodeURIComponent(url);
   const gsc = `https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=${encoded}`;
-  preview.textContent = url;
-  btnGsc.href = gsc;
-  btnOpen.href = url;
+  const bing = `https://www.bing.com/indexnow?url=${encoded}&key=zedlinker`;
+  preview.textContent = url || 'ID paste karo ya neeche list se click karo...';
+  btnGsc.href = url ? gsc : '#';
+  btnOpen.href = url || '#';
+  btnBing.href = url ? bing : '#';
   btnFirebase.href = conf.firestore;
   label.textContent = conf.label;
   hint.textContent = conf.hint;
+  // Show selected info with ID + Title
+  const selInfo = document.getElementById('selected-info');
+  const selText = document.getElementById('selected-text');
+  if(id){
+    let infoType = currentType.includes('product') ? 'Product' : currentType.includes('blog') ? 'Blog' : currentType.includes('ad') ? 'Ad' : currentType.replace('-',' ');
+    selInfo.style.display='block';
+    selText.textContent = `ID: ${id} | Type: ${infoType} | Link: ${url}`;
+  } else {
+    selInfo.style.display='none';
+  }
 }
 
 tabs.forEach(t=>{
@@ -138,11 +178,130 @@ tabs.forEach(t=>{
 pid.addEventListener('input', updateAll);
 
 document.getElementById('btn-copy-id').addEventListener('click', ()=>{
+  if(!pid.value.trim()){ alert('Pehle ID likho!'); return; }
   navigator.clipboard.writeText(pid.value.trim());
   alert('ID Copied: ' + pid.value.trim());
 });
 
 updateAll();
+
+// LIVE AUTO FETCH - NEW TOP
+const liveList = document.getElementById('live-list');
+const liveCount = document.getElementById('live-count');
+
+let allItems = [];
+
+function renderLive(){
+  // Sort newest first by createdAt
+  allItems.sort((a,b)=> (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+  const top20 = allItems.slice(0,30);
+  liveCount.textContent = allItems.length + ' live';
+  if(top20.length===0){
+    liveList.innerHTML = '<div class="small" style="padding:20px;text-align:center">No approved items yet. Firebase me approve karo, yahan top pe ayega.</div>';
+    return;
+  }
+  liveList.innerHTML = top20.map(item=>{
+    let badgeClass='badge-wg', badgeText=item.type||item.plan||'Link', title=item.name||item.title||'No Title', id=item.id;
+    let displayName = '';
+    let exampleText = '';
+    if(item.collection==='products'){ 
+      badgeClass='badge-prod'; badgeText='Product'; 
+      displayName = item.title || 'No Title';
+      exampleText = `ID: ${id} | Title: ${displayName}`;
+    }
+    else if(item.collection==='blogs'){ 
+      badgeClass='badge-blog'; badgeText='Blog'; 
+      displayName = item.title || 'No Title';
+      exampleText = `ID: ${id} | Title: ${displayName}`;
+    }
+    else if(item.collection==='ads'){ 
+      badgeClass='badge-ad'; badgeText='Ad'; 
+      displayName = item.title || 'No Title';
+      exampleText = `ID: ${id} | Title: ${displayName} | WA: ${item.whatsapp||''}`;
+    }
+    else {
+      if(item.type==='whatsapp-group'){ badgeClass='badge-wg'; badgeText='WA Group'; displayName = item.name || 'No Name'; exampleText = `ID: ${id} | Group: ${displayName}`; }
+      else if(item.type==='whatsapp-channel'){ badgeClass='badge-wc'; badgeText='WA Channel'; displayName = item.name || 'No Name'; exampleText = `ID: ${id} | Channel: ${displayName}`; }
+      else if(item.type==='telegram-group'){ badgeClass='badge-tg'; badgeText='TG Group'; displayName = item.name || 'No Name'; exampleText = `ID: ${id} | Group: ${displayName}`; }
+      else if(item.type==='telegram-channel'){ badgeClass='badge-tc'; badgeText='TG Channel'; displayName = item.name || 'No Name'; exampleText = `ID: ${id} | Channel: ${displayName}`; }
+      else { displayName = item.name || item.title || 'No Name'; exampleText = `ID: ${id} | Name: ${displayName}`; }
+    }
+    let isNew = (Date.now()/1000 - (item.createdAt?.seconds||0)) < 86400;
+    return `<div class="live-item" data-id="${id}" data-collection="${item.collection}" data-type="${item.type||''}" title="${exampleText}">
+      ${isNew?'<div class="new-dot" title="New 24h"></div>':''}
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <span class="badge ${badgeClass}">${badgeText}</span>
+          <span class="live-id" style="max-width:140px">${id}</span>
+          ${isNew?'<span style="background:#ef4444;color:white;font-size:8px;padding:2px 5px;border-radius:999px;font-weight:900">NEW</span>':''}
+        </div>
+        <div class="live-title" style="margin-top:4px;white-space:normal;line-height:1.3" title="${displayName}">${displayName}</div>
+        <div style="font-size:10px;color:#64748b;margin-top:2px;word-break:break-all">${exampleText}</div>
+      </div>
+      <span style="font-size:10px;color:#94a3b8;white-space:nowrap">${item.createdAt? new Date(item.createdAt.seconds*1000).toLocaleDateString() : ''}</span>
+    </div>`;
+  }).join('');
+
+  // Add click listeners
+  document.querySelectorAll('.live-item').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const id = el.dataset.id;
+      const col = el.dataset.collection;
+      const type = el.dataset.type;
+      pid.value = id;
+      // Auto select tab based on collection/type
+      if(col==='products'){ currentType='product'; }
+      else if(col==='blogs'){ currentType='blog'; }
+      else if(col==='ads'){ currentType='ad'; }
+      else if(type){ 
+        if(configs[type]) currentType=type;
+        else if(type.includes('whatsapp') && type.includes('group')) currentType='whatsapp-group';
+        else if(type.includes('whatsapp') && type.includes('channel')) currentType='whatsapp-channel';
+        else if(type.includes('telegram') && type.includes('group')) currentType='telegram-group';
+        else if(type.includes('telegram') && type.includes('channel')) currentType='telegram-channel';
+      }
+      tabs.forEach(x=>{
+        x.classList.remove('active');
+        if(x.dataset.type===currentType) x.classList.add('active');
+      });
+      updateAll();
+      window.scrollTo({top: document.getElementById('form-area').offsetTop - 20, behavior:'smooth'});
+      // Flash
+      pid.style.borderColor='#16a34a';
+      setTimeout(()=>pid.style.borderColor='#0f172a', 800);
+    });
+  });
+}
+
+// Fetch links (approved only)
+const qLinks = query(collection(db, 'links'), where('status','==','approved'), limit(100));
+onSnapshot(qLinks, (snap)=>{
+  const arr = snap.docs.map(d=>({ id: d.id, collection:'links', ...d.data() }));
+  // Remove old links from allItems
+  allItems = allItems.filter(x=>x.collection!=='links').concat(arr);
+  renderLive();
+}, err=>{ console.error('links err', err); });
+
+// Products
+onSnapshot(collection(db, 'products'), (snap)=>{
+  const arr = snap.docs.map(d=>({ id: d.id, collection:'products', ...d.data() }));
+  allItems = allItems.filter(x=>x.collection!=='products').concat(arr);
+  renderLive();
+});
+
+// Blogs
+onSnapshot(collection(db, 'blogs'), (snap)=>{
+  const arr = snap.docs.map(d=>({ id: d.id, collection:'blogs', ...d.data() }));
+  allItems = allItems.filter(x=>x.collection!=='blogs').concat(arr);
+  renderLive();
+});
+
+// Ads
+onSnapshot(collection(db, 'ads'), (snap)=>{
+  const arr = snap.docs.map(d=>({ id: d.id, collection:'ads', ...d.data() }));
+  allItems = allItems.filter(x=>x.collection!=='ads').concat(arr);
+  renderLive();
+});
 </script>
 </body>
 </html>
