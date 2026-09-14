@@ -28,9 +28,9 @@ h3{margin:0 0 10px;font-size:18px}
 </head>
 <body>
 <div class="wrap">
-<h1>🚀 ZedLinker V3 - Auto Indexing Dashboard</h1>
+<h1>🚀 ZedLinker V4 - Auto Indexing Dashboard + Blog ID Maker</h1>
 <div class="card" style="background:#fffbeb;border-color:#fde68a">
-<b>🔥 Naya Feature:</b> Ab Products ke sath sath WhatsApp Group, Channel, Telegram Group, Telegram Channel — sab ka 1-Click Indexing + Direct Firebase ID Copy!
+<b>🔥 Naya Feature:</b> Ab Products, WhatsApp Group, Channel, Telegram Group, Telegram Channel, AUR Naya Blog ID Maker — sab ka 1-Click Indexing + Direct Firebase ID Copy!
 </div>
 
 <div class="card">
@@ -41,6 +41,7 @@ h3{margin:0 0 10px;font-size:18px}
 <button class="tab" data-type="whatsapp-channel">📢 WhatsApp Channel</button>
 <button class="tab" data-type="telegram-group">✈️ Telegram Group</button>
 <button class="tab" data-type="telegram-channel">📡 Telegram Channel</button>
+<button class="tab" data-type="blog">📝 Blog</button>
 </div>
 
 <div id="form-area">
@@ -96,7 +97,8 @@ const configs = {
   "whatsapp-group": { label: "WhatsApp Group ID likho - Firestore links se copy karo", base: "https://zedlinker.store/?type=whatsapp-group&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "Links collection me WhatsApp Group ka ID copy karo. URL banega ?type=whatsapp-group&id=XXX - Google pe alag rank hoga!" },
   "whatsapp-channel": { label: "WhatsApp Channel ID likho", base: "https://zedlinker.store/?type=whatsapp-channel&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "WhatsApp Channel ID copy karo - Direct indexing se Channel fast rank karega!" },
   "telegram-group": { label: "Telegram Group ID likho", base: "https://zedlinker.store/?type=telegram-group&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "Telegram Group ID copy karo - Telegram groups Pakistan me high search hai!" },
-  "telegram-channel": { label: "Telegram Channel ID likho", base: "https://zedlinker.store/?type=telegram-channel&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "Telegram Channel ID copy karo - 1 click me index!" }
+  "telegram-channel": { label: "Telegram Channel ID likho", base: "https://zedlinker.store/?type=telegram-channel&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Flinks", hint: "Telegram Channel ID copy karo - 1 click me index!" },
+  "blog": { label: "Blog ID likho - Firestore blogs se copy karo", base: "https://zedlinker.store/?type=blog&id=", firestore: "https://console.firebase.google.com/project/_/firestore/data/~2Fblogs", hint: "Firebase > Firestore > blogs > Document ID copy karo > yahan paste karo > Blog ka link banega ?type=blog&id=XXX - Google Search Console me 1 click me index karo! 24h me rank!" }
 };
 
 let currentType = 'product';
