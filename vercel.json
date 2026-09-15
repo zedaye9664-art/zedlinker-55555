@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/product/:slug", "destination": "/" },
+    { "source": "/blog/:slug", "destination": "/" },
+    { "source": "/link/:slug", "destination": "/" },
+    { "source": "/ad/:slug", "destination": "/" }
+  ]
+}
