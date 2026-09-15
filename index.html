@@ -237,32 +237,31 @@ ${[...t,...r].map((i)=>`  <url>
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
   
 <script>
-/* ZED LINKER: DIRECT PRODUCT URL DETAIL VIEW */
+/* ZED LINKER: DIRECT SEO URL DETAIL VIEW FOR LINKS, PRODUCTS AND BLOGS */
 (function(){
   const route=window.ZED_CLEAN_ROUTE;
-  if(!route || route.type!=='product') return;
-  const slugify=v=>String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  if(!route || !['product','blog','link'].includes(route.type)) return;
   const apiKey='AIzaSyBADCK9FGULv7NPzMitfNq-_Wh8LFjf4nk';
-  const endpoint='https://firestore.googleapis.com/v1/projects/zedlinker-55555/databases/(default)/documents/products?key='+encodeURIComponent(apiKey);
+  const project='zedlinker-55555';
+  const slugify=v=>String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
   const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-  const overlay=document.createElement('div');
-  overlay.id='zed-direct-product-view';
+  const field=(f,k)=>f[k]?.stringValue ?? f[k]?.integerValue ?? f[k]?.doubleValue ?? f[k]?.booleanValue ?? '';
+  const endpoint=collection=>'https://firestore.googleapis.com/v1/projects/'+project+'/databases/(default)/documents/'+collection+'?key='+encodeURIComponent(apiKey);
+  const overlay=document.createElement('div'); overlay.id='zed-direct-detail-view';
   overlay.style.cssText='position:fixed;inset:0;z-index:99998;overflow:auto;background:#fffafd;font-family:Inter,system-ui,sans-serif;color:#1f2937;padding:24px 16px;';
-  overlay.innerHTML='<div style="max-width:900px;margin:0 auto"><a href="/" style="display:inline-block;margin-bottom:20px;color:#ff4b8b;font-weight:800;text-decoration:none">← Back to ZED LINKER</a><div id="zed-product-result" style="background:white;border:1px solid #f3d8e4;border-radius:24px;padding:24px">Loading product details…</div></div>';
-  document.body.appendChild(overlay);
-  const result=overlay.querySelector('#zed-product-result');
-  fetch(endpoint).then(r=>{if(!r.ok) throw new Error('Firestore request failed'); return r.json();}).then(data=>{
+  overlay.innerHTML='<div style="max-width:980px;margin:0 auto"><a href="/" style="display:inline-block;margin-bottom:20px;color:#ff4b8b;font-weight:800;text-decoration:none">← Back to ZED LINKER</a><div id="zed-detail-result" style="background:white;border:1px solid #f3d8e4;border-radius:24px;padding:24px">Loading details…</div></div>';
+  document.body.appendChild(overlay); const result=overlay.querySelector('#zed-detail-result');
+  const collection=route.type==='product'?'products':route.type==='blog'?'blogs':'links';
+  fetch(endpoint(collection)).then(r=>{if(!r.ok)throw Error('Firestore request failed');return r.json();}).then(data=>{
     const docs=Array.isArray(data.documents)?data.documents:[];
-    const item=docs.map(d=>{const f=d.fields||{}; const val=k=>f[k]?.stringValue ?? f[k]?.integerValue ?? f[k]?.doubleValue ?? ''; return {id:d.name?.split('/').pop()||'',title:val('title'),link:val('link'),description:val('description'),price:val('priceInPKR'),image:val('imageUrl')};}).find(x=>slugify(x.title)===route.slug || slugify(x.id)===route.slug);
-    if(!item){result.innerHTML='<h1 style="font-size:28px;font-weight:900;margin:0 0 8px">Product not found</h1><p style="color:#6b7280">This product may not be published yet or its URL slug is incorrect.</p>';return;}
-    result.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;align-items:start">'+
-      (item.image?'<img src="'+esc(item.image)+'" alt="'+esc(item.title)+'" style="width:100%;max-height:420px;object-fit:contain;border-radius:18px;background:#fff1f6">':'<div style="min-height:220px;border-radius:18px;background:#fff1f6;display:grid;place-items:center;color:#ff4b8b;font-weight:900">ZED LINKER</div>')+
-      '<div><div style="font-size:12px;color:#ff4b8b;font-weight:900;text-transform:uppercase;letter-spacing:.08em">ZED LINKER PRODUCT</div><h1 style="font-size:32px;line-height:1.15;font-weight:900;margin:10px 0 14px">'+esc(item.title)+'</h1>'+
-      (item.price?'<div style="font-size:25px;font-weight:900;color:#8bc34a;margin-bottom:16px">Rs. '+esc(item.price)+' PKR</div>':'')+
-      '<p style="white-space:pre-wrap;line-height:1.7;color:#4b5563">'+esc(item.description||'No description available.')+'</p>'+
-      (item.link?'<a href="'+esc(item.link)+'" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:22px;background:#ff4b8b;color:white;padding:13px 22px;border-radius:14px;font-weight:900;text-decoration:none">Buy / Visit Product</a>':'')+
-      '</div></div>';
-  }).catch(err=>{result.innerHTML='<h1 style="font-size:26px;font-weight:900">Unable to load product</h1><p style="color:#6b7280">Please check Firebase permissions and try again.</p>';console.warn(err);});
+    const items=docs.map(d=>{const f=d.fields||{};return {id:d.name?.split('/').pop()||'',title:field(f,'title')||field(f,'name'),name:field(f,'name')||field(f,'title'),link:field(f,'link'),description:field(f,'description')||field(f,'content')||field(f,'excerpt'),price:field(f,'priceInPKR'),image:field(f,'imageUrl')||field(f,'featuredImage'),type:field(f,'type'),category:field(f,'category'),status:field(f,'status'),slug:field(f,'slug')};});
+    const item=items.find(x=>slugify(x.slug)===route.slug||slugify(x.title)===route.slug||slugify(x.name)===route.slug||slugify(x.id)===route.slug);
+    if(!item){result.innerHTML='<h1 style="font-size:28px;font-weight:900;margin:0 0 8px">Page not found</h1><p style="color:#6b7280">This item may not be published yet or its URL slug is incorrect.</p>';return;}
+    if(route.type==='link' && item.status && item.status!=='approved'){result.innerHTML='<h1 style="font-size:28px;font-weight:900">Link not available</h1><p style="color:#6b7280">This link is not approved yet.</p>';return;}
+    const label=route.type==='product'?'PRODUCT':route.type==='blog'?'BLOG ARTICLE':'WHATSAPP / TELEGRAM LINK';
+    const action=route.type==='product'?'Buy / Visit Product':route.type==='blog'?'Read Full Article':'Join / Open Link';
+    result.innerHTML='<div style="font-size:12px;color:#ff4b8b;font-weight:900;text-transform:uppercase;letter-spacing:.08em">ZED LINKER '+label+'</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;align-items:start;margin-top:12px">'+(item.image?'<img src="'+esc(item.image)+'" alt="'+esc(item.title)+'" style="width:100%;max-height:420px;object-fit:contain;border-radius:18px;background:#fff1f6">':'')+'<div><h1 style="font-size:32px;line-height:1.15;font-weight:900;margin:0 0 14px">'+esc(item.title)+'</h1>'+(item.category?'<p style="color:#8bc34a;font-weight:800">'+esc(item.category)+(item.type?' • '+esc(item.type.replaceAll('_',' ')):'')+'</p>':'')+(item.price?'<div style="font-size:25px;font-weight:900;color:#8bc34a;margin-bottom:16px">Rs. '+esc(item.price)+' PKR</div>':'')+'<p style="white-space:pre-wrap;line-height:1.7;color:#4b5563">'+esc(item.description||'No description available.')+'</p>'+(item.link?'<a href="'+esc(item.link)+'" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:22px;background:#ff4b8b;color:white;padding:13px 22px;border-radius:14px;font-weight:900;text-decoration:none">'+action+'</a>':'')+'</div></div>';
+  }).catch(err=>{result.innerHTML='<h1 style="font-size:26px;font-weight:900">Unable to load details</h1><p style="color:#6b7280">Please check Firebase permissions and try again.</p>';console.warn(err);});
 })();
 </script>
 </body>
