@@ -37,6 +37,30 @@
       var l3=document.createElement('link'); l3.rel='modulepreload'; l3.href='https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js'; document.head.appendChild(l3);
     }catch(e){}
   </script>
+<script>
+/* ZED LINKER CLEAN SEO URL ROUTER */
+(function(){
+  try{
+    const path=decodeURIComponent(location.pathname.replace(/\/+$/,''))||'/';
+    const m=path.match(/^\/(product|blog|link|ad)\/([^/]+)$/i);
+    if(!m) return;
+    const kind=m[1].toLowerCase(), slug=m[2];
+    const routeMap={product:'product',blog:'blog',link:'link',ad:'ad'};
+    document.documentElement.dataset.zedRoute=routeMap[kind];
+    document.documentElement.dataset.zedSlug=slug;
+    const titleMap={product:'Product',blog:'Blog',link:'Community Link',ad:'Advertisement'};
+    document.title=slug.replace(/[-_]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase())+' | ZED LINKER';
+    let canonical=document.querySelector('link[rel="canonical"]');
+    if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical);}
+    canonical.href=location.origin+path;
+    let meta=document.querySelector('meta[name="description"]');
+    if(!meta){meta=document.createElement('meta');meta.name='description';document.head.appendChild(meta);}
+    meta.content='Explore '+titleMap[kind].toLowerCase()+' details on ZED LINKER: '+slug.replace(/[-_]+/g,' ')+'.';
+    /* Keep the clean URL visible; expose route data for the React app. */
+    window.ZED_CLEAN_ROUTE={type:kind,slug:slug,path:path};
+  }catch(e){console.warn('ZED clean route:',e)}
+})();
+</script>
 </head>
 <body>
   <div id="instant-loader">
