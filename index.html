@@ -61,6 +61,31 @@
   }catch(e){console.warn('ZED clean route:',e)}
 })();
 </script>
+<script>
+/* ZED LINKER CLEAN SEO URL ROUTER V2 */
+(function(){
+  try{
+    var path=decodeURIComponent(window.location.pathname.replace(/\/+$/,''))||'/';
+    var match=path.match(/^\/(product|blog|link|ad)\/([^/]+)$/i);
+    if(!match) return;
+    var type=match[1].toLowerCase(), slug=match[2];
+    var label={product:'Product',blog:'Blog',link:'Community Link',ad:'Advertisement'}[type];
+    var pretty=slug.replace(/[-_]+/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase()});
+    window.ZED_CLEAN_ROUTE={type:type,slug:slug,path:path,pretty:pretty};
+    document.title=pretty+' | ZED LINKER';
+    var canonical=document.querySelector('link[rel="canonical"]')||document.createElement('link');
+    canonical.rel='canonical'; canonical.href=window.location.origin+path;
+    if(!canonical.parentNode) document.head.appendChild(canonical);
+    var meta=document.querySelector('meta[name="description"]')||document.createElement('meta');
+    meta.name='description'; meta.content='Explore '+label.toLowerCase()+' details on ZED LINKER: '+pretty+'.';
+    if(!meta.parentNode) document.head.appendChild(meta);
+    document.documentElement.setAttribute('data-zed-route',type);
+    document.documentElement.setAttribute('data-zed-slug',slug);
+    /* Make route data available after React/Firebase loads without changing the clean URL. */
+    window.dispatchEvent(new CustomEvent('zed:clean-route',{detail:window.ZED_CLEAN_ROUTE}));
+  }catch(err){ console.warn('ZED clean route error',err); }
+})();
+</script>
 </head>
 <body>
   <div id="instant-loader">
@@ -211,5 +236,34 @@ ${[...t,...r].map((i)=>`  <url>
 </script>
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
   
+<script>
+/* ZED LINKER: DIRECT PRODUCT URL DETAIL VIEW */
+(function(){
+  const route=window.ZED_CLEAN_ROUTE;
+  if(!route || route.type!=='product') return;
+  const slugify=v=>String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  const apiKey='AIzaSyBADCK9FGULv7NPzMitfNq-_Wh8LFjf4nk';
+  const endpoint='https://firestore.googleapis.com/v1/projects/zedlinker-55555/databases/(default)/documents/products?key='+encodeURIComponent(apiKey);
+  const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const overlay=document.createElement('div');
+  overlay.id='zed-direct-product-view';
+  overlay.style.cssText='position:fixed;inset:0;z-index:99998;overflow:auto;background:#fffafd;font-family:Inter,system-ui,sans-serif;color:#1f2937;padding:24px 16px;';
+  overlay.innerHTML='<div style="max-width:900px;margin:0 auto"><a href="/" style="display:inline-block;margin-bottom:20px;color:#ff4b8b;font-weight:800;text-decoration:none">← Back to ZED LINKER</a><div id="zed-product-result" style="background:white;border:1px solid #f3d8e4;border-radius:24px;padding:24px">Loading product details…</div></div>';
+  document.body.appendChild(overlay);
+  const result=overlay.querySelector('#zed-product-result');
+  fetch(endpoint).then(r=>{if(!r.ok) throw new Error('Firestore request failed'); return r.json();}).then(data=>{
+    const docs=Array.isArray(data.documents)?data.documents:[];
+    const item=docs.map(d=>{const f=d.fields||{}; const val=k=>f[k]?.stringValue ?? f[k]?.integerValue ?? f[k]?.doubleValue ?? ''; return {id:d.name?.split('/').pop()||'',title:val('title'),link:val('link'),description:val('description'),price:val('priceInPKR'),image:val('imageUrl')};}).find(x=>slugify(x.title)===route.slug || slugify(x.id)===route.slug);
+    if(!item){result.innerHTML='<h1 style="font-size:28px;font-weight:900;margin:0 0 8px">Product not found</h1><p style="color:#6b7280">This product may not be published yet or its URL slug is incorrect.</p>';return;}
+    result.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;align-items:start">'+
+      (item.image?'<img src="'+esc(item.image)+'" alt="'+esc(item.title)+'" style="width:100%;max-height:420px;object-fit:contain;border-radius:18px;background:#fff1f6">':'<div style="min-height:220px;border-radius:18px;background:#fff1f6;display:grid;place-items:center;color:#ff4b8b;font-weight:900">ZED LINKER</div>')+
+      '<div><div style="font-size:12px;color:#ff4b8b;font-weight:900;text-transform:uppercase;letter-spacing:.08em">ZED LINKER PRODUCT</div><h1 style="font-size:32px;line-height:1.15;font-weight:900;margin:10px 0 14px">'+esc(item.title)+'</h1>'+
+      (item.price?'<div style="font-size:25px;font-weight:900;color:#8bc34a;margin-bottom:16px">Rs. '+esc(item.price)+' PKR</div>':'')+
+      '<p style="white-space:pre-wrap;line-height:1.7;color:#4b5563">'+esc(item.description||'No description available.')+'</p>'+
+      (item.link?'<a href="'+esc(item.link)+'" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:22px;background:#ff4b8b;color:white;padding:13px 22px;border-radius:14px;font-weight:900;text-decoration:none">Buy / Visit Product</a>':'')+
+      '</div></div>';
+  }).catch(err=>{result.innerHTML='<h1 style="font-size:26px;font-weight:900">Unable to load product</h1><p style="color:#6b7280">Please check Firebase permissions and try again.</p>';console.warn(err);});
+})();
+</script>
 </body>
 </html>
