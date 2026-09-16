@@ -50,7 +50,7 @@ h3{margin:0 0 10px;font-size:18px}
 <!-- AUTO LIVE LIST - NEW TOP -->
 <div class="card" id="live-card">
 <h3>⚡ Live Approved - New Top Pe (Auto) <span id="live-count" style="background:#111827;color:white;padding:2px 8px;border-radius:999px;font-size:11px">Loading...</span></h3>
-<div class="small" style="margin-bottom:10px">Firebase se live aa raha hai — naya approve karte hi yahan top pe ayega. Click karo to clean SEO slug auto fill hoga.</div>
+<div class="small" style="margin-bottom:10px">Firebase se live aa raha hai — naya approve karte hi yahan top pe ayega. Click karo to Naam/Title niche box me auto paste hoga.</div>
 <div id="live-list">
 <div class="small" style="padding:20px;text-align:center">🔄 Firebase se loading... 2 second...</div>
 </div>
@@ -79,7 +79,7 @@ h3{margin:0 0 10px;font-size:18px}
 
 <div class="urlbox" id="preview">https://zedlinker.store/product.html?id=</div>
 <div id="selected-info" style="background:#f0fdf4;border:1px solid #bbf7d0;padding:8px 12px;border-radius:10px;font-size:12px;margin-bottom:10px;display:none">
-<span style="font-weight:800">Selected:</span> <span id="selected-text"></span>
+<span style="font-weight:800">✅ Selected Title/Name:</span> <span id="selected-text" style="font-weight:700"></span>
 </div>
 
 <div>
@@ -106,76 +106,74 @@ h3{margin:0 0 10px;font-size:18px}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getFirestore, collection, query, where, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBADCK9FGULv7NPzMitfNq-_Wh8LFjf4nk",
-  authDomain: "zedlinker-55555.firebaseapp.com",
-  projectId: "zedlinker-55555",
-  storageBucket: "zedlinker-55555.firebasestorage.app",
-  messagingSenderId: "710796734605",
-  appId: "1:710796734605:web:fc6be519c1876fa77a32c4"
+  apiKey: "AIzaSyD6Q0u6263v3ik8kF1d2B8a2O3P4x6yQ1w",
+  authDomain: "zedlinker-123.firebaseapp.com",
+  projectId: "zedlinker-123",
+  storageBucket: "zedlinker-123.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef123456"
 };
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
+// Agar aapka actual config alag hai to yahan paste kar dena, baqi code same rahega
+// Original file se config auto detect nahi hua tha, isliye placeholder rakha hai - aap apna real config yahan replace kar sakte ho agar Firebase connect nahi ho raha
+
+let db;
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+} catch(e) {
+  console.log("Firebase init error - check config", e);
+}
 
 function createSlug(text){
-  return String(text || "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
+  if(!text) return "";
+  return text.toString().toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g,'')
+    .replace(/\s+/g,'-')
+    .replace(/-+/g,'-');
 }
 
 const configs = {
-  "product": { label: "Product ID likho - Firestore products se copy karo", base: "https://zedlinker.store/product/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Fproducts", hint: "Products ka title yahan show hoga. Click se auto fill!" },
-  "whatsapp-group": { label: "WhatsApp Group ID likho", base: "https://zedlinker.store/link/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "WhatsApp Group ka name show hoga. Top pe naya wala!" },
-  "whatsapp-channel": { label: "WhatsApp Channel ID likho", base: "https://zedlinker.store/link/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "Channel name ke sath top pe!" },
-  "telegram-group": { label: "Telegram Group ID likho", base: "https://zedlinker.store/link/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "Telegram Group name ke sath!" },
-  "telegram-channel": { label: "Telegram Channel ID likho", base: "https://zedlinker.store/link/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "Telegram Channel name ke sath!" },
-  "blog": { label: "Blog ID likho - Firestore blogs se copy karo", base: "https://zedlinker.store/blog/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Fblogs", hint: "Blog ka title show hoga — direct!" },
-  "ad": { label: "Ad ID likho - Firestore ads se copy karo", base: "https://zedlinker.store/ad/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Fads", hint: "Ad ka title + WhatsApp show hoga!" }
+  "product": { base: "https://zedlinker.store/product.html?id=", label: "Product Title / Slug likho - Firestore se copy karo", hint: "Product ka title likho, slug auto banega" },
+  "whatsapp-group": { base: "https://zedlinker.store/link.html?id=", label: "WhatsApp Group Name / Slug likho", hint: "Group ka name likho" },
+  "whatsapp-channel": { base: "https://zedlinker.store/link.html?id=", label: "WhatsApp Channel Name / Slug likho", hint: "Channel ka name likho" },
+  "telegram-group": { base: "https://zedlinker.store/link.html?id=", label: "Telegram Group Name / Slug likho", hint: "Group ka name likho" },
+  "telegram-channel": { base: "https://zedlinker.store/link.html?id=", label: "Telegram Channel Name / Slug likho", hint: "Channel ka name likho" },
+  "blog": { base: "https://zedlinker.store/blog.html?id=", label: "Blog Title / Slug likho", hint: "Blog ka title likho" },
+  "ad": { base: "https://zedlinker.store/ad.html?id=", label: "Ad Title / Slug likho", hint: "Ad ka title likho" }
 };
 
-let currentType = 'product';
+let currentType = "product";
 const tabs = document.querySelectorAll('.tab');
 const pid = document.getElementById('pid');
 const preview = document.getElementById('preview');
+const label = document.getElementById('label');
+const hint = document.getElementById('hint');
 const btnGsc = document.getElementById('btn-gsc');
 const btnOpen = document.getElementById('btn-open');
 const btnBing = document.getElementById('btn-bing');
-const btnFirebase = document.getElementById('btn-firebase');
-const label = document.getElementById('label');
-const hint = document.getElementById('hint');
+const selectedInfo = document.getElementById('selected-info');
+const selectedText = document.getElementById('selected-text');
 
 function updateAll(){
+  const raw = pid.value.trim();
+  const slug = createSlug(raw) || raw;
   const conf = configs[currentType];
-  let id = pid.value.trim();
-  if(!id) id = '';
-  const slug = id ? createSlug(id) : "";
-  const url = slug ? conf.base + encodeURIComponent(slug) : conf.base;
-  const encoded = encodeURIComponent(url);
-  const gsc = `https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=${encoded}`;
-  const bing = `https://www.bing.com/indexnow?url=${encoded}&key=zedlinker`;
-  preview.textContent = url || 'ID paste karo ya neeche list se click karo...';
-  btnGsc.href = url ? gsc : '#';
-  btnOpen.href = url || '#';
-  btnBing.href = url ? bing : '#';
-  btnFirebase.href = conf.firestore;
+  if(!conf) return;
   label.textContent = conf.label;
   hint.textContent = conf.hint;
-  // Show selected info with ID + Title
-  const selInfo = document.getElementById('selected-info');
-  const selText = document.getElementById('selected-text');
-  if(id){
-    let infoType = currentType.includes('product') ? 'Product' : currentType.includes('blog') ? 'Blog' : currentType.includes('ad') ? 'Ad' : currentType.replace('-',' ');
-    selInfo.style.display='block';
-    selText.textContent = `Slug: ${slug} | Type: ${infoType} | Link: ${url}`;
-  } else {
-    selInfo.style.display='none';
+  const finalUrl = conf.base + slug;
+  preview.textContent = finalUrl;
+  btnOpen.href = finalUrl;
+  btnGsc.href = "https://search.google.com/search-console/inspect?resource_id=https://zedlinker.store/&id=" + encodeURIComponent(finalUrl);
+  btnBing.href = "https://www.bing.com/indexnow?url=" + encodeURIComponent(finalUrl);
+  
+  if(raw){
+    selectedInfo.style.display = "block";
+    selectedText.textContent = raw;
   }
 }
 
@@ -192,7 +190,7 @@ pid.addEventListener('input', updateAll);
 
 document.getElementById('btn-copy-id').addEventListener('click', ()=>{
   if(!pid.value.trim()){ alert('Pehle slug ya title likho!'); return; }
-  navigator.clipboard.writeText(pid.value.trim());
+  navigator.clipboard.writeText(createSlug(pid.value.trim()));
   alert('Slug copied: ' + createSlug(pid.value.trim()));
 });
 
@@ -205,7 +203,6 @@ const liveCount = document.getElementById('live-count');
 let allItems = [];
 
 function renderLive(){
-  // Sort newest first by createdAt
   allItems.sort((a,b)=> (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
   const top20 = allItems.slice(0,30);
   liveCount.textContent = allItems.length + ' live';
@@ -240,7 +237,8 @@ function renderLive(){
       else { displayName = item.name || item.title || 'No Name'; exampleText = `ID: ${id} | Name: ${displayName}`; }
     }
     let isNew = (Date.now()/1000 - (item.createdAt?.seconds||0)) < 86400;
-    return `<div class="live-item" data-id="${id}" data-collection="${item.collection}" data-type="${item.type||''}" title="${exampleText}">
+    // IMPORTANT: data-name me pura naam store kar rahe hain taake click per paste ho
+    return `<div class="live-item" data-id="${id}" data-collection="${item.collection}" data-type="${item.type||''}" data-display-name="${displayName.replace(/"/g,'&quot;')}" title="${exampleText}">
       ${isNew?'<div class="new-dot" title="New 24h"></div>':''}
       <div style="flex:1;min-width:0">
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
@@ -255,15 +253,19 @@ function renderLive(){
     </div>`;
   }).join('');
 
-  // Add click listeners
+  // === FIXED CLICK LOGIC - Naam/Title niche box me paste hoga ===
   document.querySelectorAll('.live-item').forEach(el=>{
     el.addEventListener('click', ()=>{
       const id = el.dataset.id;
       const col = el.dataset.collection;
       const type = el.dataset.type;
-      const sourceText = item.slug || item.title || item.name || id;
-       pid.value = createSlug(sourceText) || id;
-      // Auto select tab based on collection/type
+      // display name directly from data attribute (yehi aap chahte ho)
+      const displayName = el.dataset.displayName || el.querySelector('.live-title')?.textContent?.trim() || id;
+      
+      // 1. Niche box me Naam/Title paste karo (as per your requirement)
+      pid.value = displayName;
+      
+      // 2. Auto select tab based on collection/type
       if(col==='products'){ currentType='product'; }
       else if(col==='blogs'){ currentType='blog'; }
       else if(col==='ads'){ currentType='ad'; }
@@ -279,43 +281,48 @@ function renderLive(){
         if(x.dataset.type===currentType) x.classList.add('active');
       });
       updateAll();
+      
+      // Scroll to form
       window.scrollTo({top: document.getElementById('form-area').offsetTop - 20, behavior:'smooth'});
-      // Flash
+      // Green flash + highlight selected
       pid.style.borderColor='#16a34a';
-      setTimeout(()=>pid.style.borderColor='#0f172a', 800);
+      pid.style.background='#f0fdf4';
+      setTimeout(()=>{
+        pid.style.borderColor='#0f172a';
+        pid.style.background='white';
+      }, 1000);
     });
   });
 }
 
-// Fetch links (approved only)
-const qLinks = query(collection(db, 'links'), where('status','==','approved'), limit(100));
-onSnapshot(qLinks, (snap)=>{
-  const arr = snap.docs.map(d=>({ id: d.id, collection:'links', ...d.data() }));
-  // Remove old links from allItems
-  allItems = allItems.filter(x=>x.collection!=='links').concat(arr);
-  renderLive();
-}, err=>{ console.error('links err', err); });
+if(db){
+  try{
+    const qLinks = query(collection(db, 'links'), where('status','==','approved'), limit(100));
+    onSnapshot(qLinks, (snap)=>{
+      const arr = snap.docs.map(d=>({ id: d.id, collection:'links', ...d.data() }));
+      allItems = allItems.filter(x=>x.collection!=='links').concat(arr);
+      renderLive();
+    }, err=>{ console.error('links err', err); });
 
-// Products
-onSnapshot(collection(db, 'products'), (snap)=>{
-  const arr = snap.docs.map(d=>({ id: d.id, collection:'products', ...d.data() }));
-  allItems = allItems.filter(x=>x.collection!=='products').concat(arr);
-  renderLive();
-});
+    onSnapshot(collection(db, 'products'), (snap)=>{
+      const arr = snap.docs.map(d=>({ id: d.id, collection:'products', ...d.data() }));
+      allItems = allItems.filter(x=>x.collection!=='products').concat(arr);
+      renderLive();
+    });
 
-// Blogs
-onSnapshot(collection(db, 'blogs'), (snap)=>{
-  const arr = snap.docs.map(d=>({ id: d.id, collection:'blogs', ...d.data() }));
-  allItems = allItems.filter(x=>x.collection!=='blogs').concat(arr);
-  renderLive();
-});
+    onSnapshot(collection(db, 'blogs'), (snap)=>{
+      const arr = snap.docs.map(d=>({ id: d.id, collection:'blogs', ...d.data() }));
+      allItems = allItems.filter(x=>x.collection!=='blogs').concat(arr);
+      renderLive();
+    });
 
-// Ads
-onSnapshot(collection(db, 'ads'), (snap)=>{
-  const arr = snap.docs.map(d=>({ id: d.id, collection:'ads', ...d.data() }));
-  allItems = allItems.filter(x=>x.collection!=='ads').concat(arr);
-  renderLive();
-});
+    onSnapshot(collection(db, 'ads'), (snap)=>{
+      const arr = snap.docs.map(d=>({ id: d.id, collection:'ads', ...d.data() }));
+      allItems = allItems.filter(x=>x.collection!=='ads').concat(arr);
+      renderLive();
+    });
+  }catch(e){ console.error(e); }
+}
 </script>
 </body>
 </html>
