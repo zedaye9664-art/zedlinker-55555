@@ -336,5 +336,81 @@ window.renderBlogSEO = function(blog){
   meta.setAttribute('content', description);
 };
 </script>
+
+<style id="zed-user-enhancements">
+#zed-wa-help{position:fixed;right:18px;bottom:88px;z-index:9999;background:#25D366;color:#fff;border-radius:999px;padding:12px 16px;display:flex;gap:8px;align-items:center;font:700 14px Arial,sans-serif;box-shadow:0 8px 24px #0002;text-decoration:none}
+#zed-wa-help span{font-size:22px}
+#zed-legal-drawer{display:none;position:fixed;inset:0;background:#0008;z-index:10000;align-items:center;justify-content:center;padding:16px}
+#zed-legal-drawer.open{display:flex}
+#zed-legal-card{background:#fff;color:#202020;max-width:720px;max-height:85vh;overflow:auto;border-radius:20px;padding:24px;font:15px/1.6 Arial,sans-serif}
+#zed-legal-card button{float:right;border:0;background:#f3f3f3;border-radius:50%;width:32px;height:32px;font-size:20px}
+#zed-legal-card h2{color:#d92d70;margin-top:0}
+#zed-legal-links{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:20px 0;font:13px Arial}
+#zed-legal-links a{color:#d92d70;text-decoration:underline;cursor:pointer}
+@media(max-width:480px){#zed-wa-help{right:12px;bottom:78px;padding:10px 12px;font-size:12px}}
+</style>
+<a id="zed-wa-help" href="https://wa.me/923710536394?text=Assalam%20o%20Alaikum%2C%20I%20need%20help%20with%20Zed%20Linker." target="_blank" rel="noopener" aria-label="Contact Zed Linker on WhatsApp"><span>🟢</span> WhatsApp Help</a>
+<div id="zed-legal-drawer" role="dialog" aria-modal="true" aria-labelledby="zed-legal-title">
+ <div id="zed-legal-card"><button id="zed-legal-close" aria-label="Close">×</button><h2 id="zed-legal-title"></h2><div id="zed-legal-body"></div></div>
+</div>
+<script>
+(function(){
+ const legal={
+  "About Us":`Zed Linker is a directory for discovering and sharing WhatsApp and Telegram groups and channels. Users can explore categories, submit links, and discover online communities. We aim to keep the directory useful, clear, and safe.`,
+  "Disclaimer":`Zed Linker lists links submitted by users. We do not own or control every external group, channel, product, advertisement, or website. Users should check links before joining or using them. We do not promise that every external link is always available, accurate, or safe.`,
+  "Terms and Conditions":`Users must submit real, working, and relevant links. Duplicate, fake, harmful, illegal, misleading, or spam links are not allowed. A reward is only a digital wallet record and is not an automatic cash payment. Link rewards are given only after admin approval. Referral rewards require genuine verified users. Withdrawal requires the active minimum balance, required verified referrals, complete profile, and admin review. Admin may reject links, reverse fraudulent rewards, suspend accounts, and update rules. Payments are made manually by the admin through the selected payment method. Users must keep their account and payment details correct.`,
+  "Privacy Policy":`We may collect account details, submitted links, contact details, referral records, wallet records, and withdrawal details to operate Zed Linker. We should not display private payment details publicly. Users should not submit passwords or unnecessary sensitive information. Data may be reviewed by authorized administrators for safety, support, fraud prevention, and payment processing.`,
+  "Withdrawal Policy":`The current planned rules are: minimum withdrawal Rs. 500, maximum Rs. 2,000, and 10% fee. Withdrawal also requires at least 10 genuine verified referrals and complete account details. The admin sends payment manually through Easypaisa or JazzCash and then marks the request as Paid. A withdrawal is not guaranteed until admin review is complete.`,
+  "Contact Us":`WhatsApp: 03710536394<br>Email: zedai9664@gmail.com`
+ };
+ function openLegal(name){document.getElementById('zed-legal-title').textContent=name;document.getElementById('zed-legal-body').innerHTML=legal[name]||'';document.getElementById('zed-legal-drawer').classList.add('open')}
+ function addLinks(){
+  if(document.getElementById('zed-legal-links'))return;
+  const el=document.createElement('div');el.id='zed-legal-links';
+  Object.keys(legal).forEach(name=>{const a=document.createElement('a');a.textContent=name;a.href='#';a.onclick=e=>{e.preventDefault();openLegal(name)};el.appendChild(a)});
+  document.body.appendChild(el);
+ }
+ document.getElementById('zed-legal-close').onclick=()=>document.getElementById('zed-legal-drawer').classList.remove('open');
+ document.getElementById('zed-legal-drawer').onclick=e=>{if(e.target.id==='zed-legal-drawer')e.currentTarget.classList.remove('open')};
+ setTimeout(addLinks,1800);
+})();
+</script>
+
+
+<!-- Zed Linker Firebase foundation -->
+<script type="module">
+  import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, addDoc, collection, query, where, getDocs, serverTimestamp, runTransaction } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBADCK9FGULv7NPzMitfNq-_Wh8LFjf4nk",
+    authDomain: "zedlinker-55555.firebaseapp.com",
+    projectId: "zedlinker-55555",
+    storageBucket: "zedlinker-55555.firebasestorage.app",
+    messagingSenderId: "710796734605",
+    appId: "1:710796734605:web:fc6be519c1876fa77a32c4"
+  };
+
+  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  window.zedFirebase = {
+    app, auth, db, storage,
+    onAuthStateChanged, createUserWithEmailAndPassword,
+    signInWithEmailAndPassword, signOut, updateProfile,
+    doc, setDoc, getDoc, addDoc, collection, query, where,
+    getDocs, serverTimestamp, runTransaction,
+    ref, uploadBytes, getDownloadURL
+  };
+
+  onAuthStateChanged(auth, user => {
+    window.dispatchEvent(new CustomEvent('zed-auth-changed', { detail: { user } }));
+  });
+</script>
+
 </body>
 </html>
