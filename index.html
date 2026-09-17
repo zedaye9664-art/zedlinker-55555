@@ -412,5 +412,121 @@ window.renderBlogSEO = function(blog){
   });
 </script>
 
+
+<!-- ZED LINKER ACCOUNT, WALLET, REFERRAL AND WITHDRAWAL MODULE -->
+<script type="module">
+  import {
+    getAuth, onAuthStateChanged, createUserWithEmailAndPassword,
+    signInWithEmailAndPassword, signOut, sendEmailVerification,
+    updateProfile
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  import {
+    getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection,
+    query, where, getDocs, serverTimestamp, runTransaction, limit
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+  const F = window.zedFirebase;
+  if (!F) {
+    console.error("Zed Firebase foundation is missing.");
+  } else {
+    const {auth, db} = F;
+    const ADMIN_EMAIL = "zedaye9664@gmail.com";
+    const normalizeUrl = value => {
+      try {
+        const u = new URL(String(value).trim());
+        u.hash = "";
+        u.hostname = u.hostname.toLowerCase();
+        return u.toString().replace(/\/$/, "");
+      } catch {
+        return String(value).trim().toLowerCase();
+      }
+    };
+    const userRef = uid => doc(db, "users", uid);
+
+    async function createZedUserProfile(user, extra = {}) {
+      const ref = userRef(user.uid);
+      const existing = await getDoc(ref);
+      if (existing.exists()) return existing.data();
+      const profile = {
+        uid: user.uid,
+        name: user.displayName || extra.name || "",
+        email: user.email || "",
+        phone: extra.phone || "",
+        referralCode: user.uid.slice(0, 8).toUpperCase(),
+        referredBy: extra.referredBy || "",
+        verifiedReferralCount: 0,
+        walletBalance: 0,
+        totalEarned: 0,
+        createdAt: serverTimestamp()
+      };
+      await setDoc(ref, profile);
+      return profile;
+    }
+
+    async function submitZedLink(data) {
+      const user = auth.currentUser;
+      if (!user) throw new Error("Please login before submitting a link.");
+      const url = normalizeUrl(data.url);
+      if (!url) throw new Error("A valid link is required.");
+      const duplicate = await getDocs(query(
+        collection(db, "links"), where("duplicateKey", "==", url), limit(1)
+      ));
+      if (!duplicate.empty) throw new Error("This link has already been submitted.");
+      return addDoc(collection(db, "links"), {
+        name: String(data.name || "").trim(),
+        url,
+        duplicateKey: url,
+        type: data.type || "WhatsApp Group",
+        description: String(data.description || "").trim(),
+        submittedBy: user.uid,
+        status: "pending",
+        rewardGiven: false,
+        createdAt: serverTimestamp()
+      });
+    }
+
+    async function requestZedWithdrawal(amount, method, accountNumber, accountName) {
+      const user = auth.currentUser;
+      if (!user) throw new Error("Please login first.");
+      const value = Number(amount);
+      if (!Number.isFinite(value) || value < 500 || value > 2000)
+        throw new Error("Withdrawal must be between Rs. 500 and Rs. 2,000.");
+      const profileSnap = await getDoc(userRef(user.uid));
+      const profile = profileSnap.data() || {};
+      if (Number(profile.walletBalance || 0) < value)
+        throw new Error("Insufficient wallet balance.");
+      if (Number(profile.verifiedReferralCount || 0) < 10)
+        throw new Error("At least 10 verified referrals are required.");
+      if (!["Easypaisa", "JazzCash"].includes(method))
+        throw new Error("Select Easypaisa or JazzCash.");
+      return addDoc(collection(db, "withdrawals"), {
+        userId: user.uid,
+        amount: value,
+        fee: Math.round(value * 0.10 * 100) / 100,
+        payableAmount: Math.round(value * 0.90 * 100) / 100,
+        method,
+        accountNumber: String(accountNumber || "").trim(),
+        accountName: String(accountName || "").trim(),
+        status: "pending",
+        createdAt: serverTimestamp()
+      });
+    }
+
+    window.ZedLinker = {
+      ...window.ZedLinker,
+      auth, db, ADMIN_EMAIL, normalizeUrl,
+      createZedUserProfile, submitZedLink, requestZedWithdrawal,
+      isAdmin: () => auth.currentUser?.email === ADMIN_EMAIL
+    };
+
+    onAuthStateChanged(auth, async user => {
+      if (user) {
+        await createZedUserProfile(user);
+        window.dispatchEvent(new CustomEvent("zed-user-ready", {detail: {user}}));
+      }
+    });
+  }
+</script>
+
 </body>
 </html>
