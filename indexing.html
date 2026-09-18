@@ -1,58 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ZedLinker - AUTO Sitemap Generator - Firebase Live</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZedLinker V5 - Auto Live Dashboard - New Links Top</title>
 <style>
-body{font-family:Inter,sans-serif;background:#f8fafc;padding:16px;max-width:900px;margin:0 auto}
-.card{background:white;padding:18px;border-radius:16px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:14px;border:1px solid #eef2f7}
-.btn{background:#111827;color:white;padding:12px 18px;border-radius:10px;border:none;font-weight:800;cursor:pointer;margin:5px}
+body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;margin:0;padding:12px}
+.wrap{max-width:900px;margin:0 auto}
+.card{background:white;border-radius:18px;padding:18px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:14px;border:1px solid #eef2f7}
+h1{font-size:22px;margin:4px 0 12px}
+h3{margin:0 0 10px;font-size:18px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
+.tab{padding:10px 14px;border-radius:999px;border:2px solid #e2e8f0;background:white;font-weight:700;font-size:13px;white-space:nowrap;cursor:pointer}
+.tab.active{background:#111827;color:white;border-color:#111827}
+.input{width:100%;padding:14px;border:2px solid #0f172a;border-radius:12px;font-size:15px;box-sizing:border-box;font-weight:600}
+.urlbox{background:#f1f5f9;padding:10px;border-radius:10px;word-break:break-all;font-family:monospace;font-size:13px;margin:10px 0;border:1px dashed #cbd5e1}
+.btn{display:inline-flex;align-items:center;gap:6px;background:#111827;color:white;padding:12px 16px;border-radius:11px;text-decoration:none;font-weight:800;margin:5px 5px 5px 0;font-size:13px;border:none;cursor:pointer}
 .btn-blue{background:#2563eb}
 .btn-green{background:#16a34a}
-pre{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:12px;overflow:auto;max-height:500px;white-space:pre-wrap;word-break:break-all;font-size:11px}
-.small{font-size:12px;color:#64748b;line-height:1.5}
+.btn-orange{background:#f59e0b;color:#111827}
+.btn-pink{background:#ec4899}
+.btn-outline{background:white;color:#111827;border:2px solid #e2e8f0}
+.small{font-size:11px;color:#64748b;line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.live-item{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #eef2f7;border-radius:12px;margin-bottom:8px;background:white;cursor:pointer;transition:.2s}
+.live-item:hover{border-color:#111827;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.live-item .badge{font-size:10px;font-weight:900;padding:4px 8px;border-radius:999px;white-space:nowrap}
+.badge-wg{background:#dcfce7;color:#166534}
+.badge-wc{background:#dbeafe;color:#1e40af}
+.badge-tg{background:#e0e7ff;color:#4338ca}
+.badge-tc{background:#f3e8ff;color:#6b21a8}
+.badge-prod{background:#fef3c7;color:#92400e}
+.badge-blog{background:#fce7f3;color:#9d174d}
+.badge-ad{background:#ffedd5;color:#9a3412}
+.live-id{font-family:monospace;font-size:11px;color:#64748b;background:#f1f5f9;padding:2px 6px;border-radius:6px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.live-title{font-weight:700;font-size:13px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.new-dot{width:8px;height:8px;background:#ef4444;border-radius:50%;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 </style>
 </head>
 <body>
-<h1>🗺️ ZedLinker AUTO Sitemap Generator - LIVE Firebase</h1>
+<div class="wrap">
+<h1>🚀 ZedLinker V5 - Auto Live Indexing Dashboard</h1>
 <div class="card" style="background:#fffbeb;border-color:#fde68a">
-<b>🔥 FIXED:</b> Aapke screenshot wala error <code>meta line 3 and head mismatch</code> isi liye aaya kyuki maine sitemap.xml me HTML tag lagaya tha. Ab ye generator <b>100% valid XML</b> banayega!<br/><br/>
-<b>Auto Kaise Kaam Karega:</b><br/>
-- Jab aap naya WhatsApp Group/Channel, Telegram Group/Channel, Blog, Product approve karoge<br/>
-- Yahan aao → <b>Generate</b> dabao → Naya sitemap.xml banega saare naye links ke saath<br/>
-- Download karke GitHub pe sitemap.xml replace kardo → Google auto SEO karega!
+<b>🔥 Auto Live:</b> Ab Firebase kholne ki zarurat nahi! Neeche <b>New Approved Links Top Pe</b> auto show ho rahe hain — WhatsApp Group/Channel, Telegram Group/Channel, Products (title), Blogs (title), Ads — sab ka clean SEO slug + Name direct! Click karo → SEO URL banega → Google Search Console mein inspect karo!
+</div>
+
+<!-- AUTO LIVE LIST - NEW TOP -->
+<div class="card" id="live-card">
+<h3>⚡ Live Approved - New Top Pe (Auto) <span id="live-count" style="background:#111827;color:white;padding:2px 8px;border-radius:999px;font-size:11px">Loading...</span></h3>
+<div class="small" style="margin-bottom:10px">Firebase se live aa raha hai — naya approve karte hi yahan top pe ayega. Click karo to clean SEO slug auto fill hoga.</div>
+<div id="live-list">
+<div class="small" style="padding:20px;text-align:center">🔄 Firebase se loading... 2 second...</div>
+</div>
 </div>
 
 <div class="card">
-<h3>⚡ Live Firebase Stats</h3>
-<div id="stats" class="small">🔄 Firebase se loading... 2-3 sec...</div>
+<h3>📦 Type Select Karo (Manual Bhi)</h3>
+<div class="tabs" id="tabs">
+<button class="tab active" data-type="product">🛒 Product (Daraz)</button>
+<button class="tab" data-type="whatsapp-group">💬 WhatsApp Group</button>
+<button class="tab" data-type="whatsapp-channel">📢 WhatsApp Channel</button>
+<button class="tab" data-type="telegram-group">✈️ Telegram Group</button>
+<button class="tab" data-type="telegram-channel">📡 Telegram Channel</button>
+<button class="tab" data-type="blog">📝 Blog</button>
+<button class="tab" data-type="ad">📢 Ad</button>
 </div>
 
-<div class="card">
-<h3>📋 Generated VALID sitemap.xml</h3>
+<div id="form-area">
+<label style="font-weight:700;font-size:13px;margin-bottom:6px;display:block" id="label">Product ID likho - Firestore se copy karo</label>
+<input id="pid" class="input" placeholder="Yahan Name/Title auto paste hoga - jaise Peshawar Jobs Group" value="">
+
+<div class="grid" style="margin-top:10px">
+<a class="btn btn-outline" target="_blank" id="btn-firebase" href="https://console.firebase.google.com/">🔥 Firebase Firestore Khollo</a>
+<button class="btn btn-outline" id="btn-copy-id">📋 ID Copy Karo</button>
+</div>
+
+<div class="urlbox" id="preview">https://zedlinker.store/product.html?id=</div>
+<div id="selected-info" style="background:#f0fdf4;border:1px solid #bbf7d0;padding:8px 12px;border-radius:10px;font-size:12px;margin-bottom:10px;display:none">
+<span style="font-weight:800">Selected:</span> <span id="selected-text"></span>
+</div>
+
 <div>
-<button class="btn btn-blue" id="btn-copy">📋 Copy XML</button>
-<button class="btn btn-green" id="btn-download">⬇️ Download sitemap.xml (VALID)</button>
+<a id="btn-gsc" class="btn btn-blue" target="_blank" href="#">🔍 Google Search Console Me Direct Index Karo - 1 Click</a>
+<a id="btn-open" class="btn btn-green" target="_blank" href="#">👁️ Live Page Khollo</a>
+<a id="btn-bing" class="btn btn-orange" target="_blank" href="#">🚀 Bing IndexNow Ping</a>
 </div>
-<pre id="output">Loading Firebase data...</pre>
+
+<div class="small" id="hint" style="margin-top:12px"></div>
+<div class="small" style="margin-top:10px;background:#fff7ed;border:1px solid #fed7aa;padding:10px;border-radius:10px"><b>Important:</b> Yeh dashboard clean URL banata hai. Main website ke <b>index.html</b> mein bhi <b>/blog/slug</b>, <b>/product/slug</b> aur <b>/link/slug</b> routing implement hona zaroori hai. Sirf sitemap ya indexing button se page automatically create nahi hota.</div>
+</div>
 </div>
 
 <div class="card">
-<h3>📌 Deploy Steps - 1 Min</h3>
+<h3>📌 SEO Tips</h3>
 <div class="small">
-1. <b>Download sitemap.xml</b> dabao (ye valid XML hoga, error nahi ayega)<br/>
-2. GitHub repo me root me <b>sitemap.xml</b> ko replace karo<br/>
-3. Commit: <code>Auto sitemap with all approved links</code><br/>
-4. <b>zedlinker.store/sitemap.xml</b> kholo - ab XML tree sahi dikhega, error nahi!<br/>
-5. Google Search Console me already submitted hai, Google daily check karega<br/><br/>
-<b>Har baar naya link approve karne ke baad:</b> Is generator ko kholo → Download → GitHub pe replace → Ho gaya auto!
+- Naya link approve karte hi yahan top pe ayega (Newest First).<br>
+- WhatsApp Group/Channel ka <b>name</b>, Blog/Product ka <b>title</b> sath show hoga — Firebase jaisa.<br>
+- Click karo → ID auto fill → GSC button se index karo.<br>
+- Har roz 5-10 index karo, 24h me Google rank karega!
+</div>
 </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBADCK9FGULv7NPzMitfNq-_Wh8LFjf4nk",
@@ -65,102 +119,231 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
 function createSlug(text){
-  if(!text) return '';
-  return text.toString().toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').substring(0,80).replace(/^-|-$/g,'');
+  return String(text || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 }
-function escapeXml(s){ return s.replace(/[<>&'"]/g, c=>({ '<':'&lt;','>':'&gt;','&':'&amp;',"'":'&apos;','"':'&quot;'}[c])); }
 
-async function generate(){
-  const statsEl = document.getElementById('stats');
-  const outEl = document.getElementById('output');
-  const today = new Date().toISOString().split('T')[0];
-  let urls = [];
-  urls.push({loc:'https://zedlinker.store/', lastmod:today, changefreq:'daily', priority:'1.0'});
-  urls.push({loc:'https://zedlinker.store/ads.html', lastmod:today, changefreq:'daily', priority:'0.9'});
-  const categories = ['Education','Entertainment','Business','Jobs','Technology','News','Gaming'];
-  categories.forEach(cat=>{ urls.push({loc:`https://zedlinker.store/?category=${encodeURIComponent(cat)}`, lastmod:today, changefreq:'daily', priority:'0.8'}); });
-  const types = ['whatsapp_group','whatsapp_channel','telegram_group','telegram_channel'];
-  types.forEach(t=>{ urls.push({loc:`https://zedlinker.store/?type=${t}`, lastmod:today, changefreq:'daily', priority:'0.8'}); });
+const configs = {
+  "product": { label: "Product ID likho - Firestore products se copy karo", base: "https://zedlinker.store/product/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Fproducts", hint: "Products ka title yahan show hoga. Click se auto fill!" },
+  "whatsapp-group": { label: "WhatsApp Group ID likho", base: "https://zedlinker.store/link/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "WhatsApp Group ka name show hoga. Top pe naya wala!" },
+  "whatsapp-channel": { label: "WhatsApp Channel ID likho", base: "https://zedlinker.store/link/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "Channel name ke sath top pe!" },
+  "telegram-group": { label: "Telegram Group ID likho", base: "https://zedlinker.store/link/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "Telegram Group name ke sath!" },
+  "telegram-channel": { label: "Telegram Channel ID likho", base: "https://zedlinker.store/link/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Flinks", hint: "Telegram Channel name ke sath!" },
+  "blog": { label: "Blog ID likho - Firestore blogs se copy karo", base: "https://zedlinker.store/blog/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Fblogs", hint: "Blog ka title show hoga — direct!" },
+  "ad": { label: "Ad ID likho - Firestore ads se copy karo", base: "https://zedlinker.store/ad/", firestore: "https://console.firebase.google.com/project/zedlinker-55555/firestore/data/~2Fads", hint: "Ad ka title + WhatsApp show hoga!" }
+};
 
-  try{
-    const [linksSnap, productsSnap, blogsSnap, adsSnap] = await Promise.all([
-      getDocs(query(collection(db, 'links'), where('status','==','approved'))),
-      getDocs(collection(db, 'products')),
-      getDocs(collection(db, 'blogs')),
-      getDocs(query(collection(db, 'ads'), where('status','==','approved')))
-    ]);
-    const links = linksSnap.docs.map(d=>({id:d.id, ...d.data()}));
-    const products = productsSnap.docs.map(d=>({id:d.id, ...d.data()}));
-    const blogs = blogsSnap.docs.map(d=>({id:d.id, ...d.data()}));
-    const ads = adsSnap.docs.map(d=>({id:d.id, ...d.data()}));
+let currentType = 'product';
+const tabs = document.querySelectorAll('.tab');
+const pid = document.getElementById('pid');
+const preview = document.getElementById('preview');
+const btnGsc = document.getElementById('btn-gsc');
+const btnOpen = document.getElementById('btn-open');
+const btnBing = document.getElementById('btn-bing');
+const btnFirebase = document.getElementById('btn-firebase');
+const label = document.getElementById('label');
+const hint = document.getElementById('hint');
 
-    statsEl.innerHTML = `✅ <b>${links.length} Links</b> | <b>${products.length} Products</b> | <b>${blogs.length} Blogs</b> | <b>${ads.length} Ads</b> = Total <b>${urls.length + links.length*2 + products.length*2 + blogs.length*2 + ads.length} URLs</b> — Ab ye saare sitemap.xml me ayenge!`;
-
-    links.forEach(link=>{
-      const slug = createSlug(link.name || link.title || '') || link.id;
-      const type = link.type || 'whatsapp_group';
-      const lastmod = link.createdAt?.toDate ? link.createdAt.toDate().toISOString().split('T')[0] : today;
-      urls.push({loc:`https://zedlinker.store/link/${slug}-${link.id}`, lastmod, changefreq:'weekly', priority:'0.8'});
-      urls.push({loc:`https://zedlinker.store/?type=${type}&id=${link.id}`, lastmod, changefreq:'weekly', priority:'0.8'});
-    });
-    products.forEach(p=>{
-      const slug = createSlug(p.title || '') || p.id;
-      const lastmod = p.createdAt?.toDate ? p.createdAt.toDate().toISOString().split('T')[0] : today;
-      urls.push({loc:`https://zedlinker.store/product.html?id=${p.id}`, lastmod, changefreq:'weekly', priority:'0.8'});
-      urls.push({loc:`https://zedlinker.store/product/${slug}-${p.id}`, lastmod, changefreq:'weekly', priority:'0.8'});
-    });
-    blogs.forEach(b=>{
-      const slug = createSlug(b.title || '') || b.id;
-      const lastmod = b.createdAt?.toDate ? b.createdAt.toDate().toISOString().split('T')[0] : today;
-      urls.push({loc:`https://zedlinker.store/blog-details.html?id=${b.id}`, lastmod, changefreq:'weekly', priority:'0.9'});
-      urls.push({loc:`https://zedlinker.store/blog/${slug}-${b.id}`, lastmod, changefreq:'weekly', priority:'0.9'});
-    });
-    ads.forEach(ad=>{
-      const slug = createSlug(ad.title || '') || ad.id;
-      const lastmod = ad.createdAt?.toDate ? ad.createdAt.toDate().toISOString().split('T')[0] : today;
-      urls.push({loc:`https://zedlinker.store/ad-details.html?id=${ad.id}`, lastmod, changefreq:'weekly', priority:'0.7'});
-    });
-
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-`;
-    urls.forEach(u=>{
-      xml += `  <url>
-    <loc>${escapeXml(u.loc)}</loc>
-    <lastmod>${u.lastmod}</lastmod>
-    <changefreq>${u.changefreq}</changefreq>
-    <priority>${u.priority}</priority>
-  </url>
-`;
-    });
-    xml += `</urlset>`;
-    outEl.textContent = xml;
-    window.generatedXML = xml;
-  }catch(e){
-    statsEl.innerHTML = '❌ Error: ' + e.message;
-    outEl.textContent = 'Error: ' + e.message;
-    console.error(e);
+function updateAll(){
+  const conf = configs[currentType];
+  let id = pid.value.trim();
+  if(!id) id = '';
+  const slug = id ? createSlug(id) : "";
+  const url = slug ? conf.base + encodeURIComponent(slug) : conf.base;
+  const encoded = encodeURIComponent(url);
+  const gsc = `https://search.google.com/search-console/inspect?resource_id=sc-domain%3Azedlinker.store&hl=en&url=${encoded}`;
+  const bing = `https://www.bing.com/indexnow?url=${encoded}&key=zedlinker`;
+  preview.textContent = url || 'ID paste karo ya neeche list se click karo...';
+  btnGsc.href = url ? gsc : '#';
+  btnOpen.href = url || '#';
+  btnBing.href = url ? bing : '#';
+  btnFirebase.href = conf.firestore;
+  label.textContent = conf.label;
+  hint.textContent = conf.hint;
+  // Show selected info with ID + Title
+  const selInfo = document.getElementById('selected-info');
+  const selText = document.getElementById('selected-text');
+  if(id){
+    let infoType = currentType.includes('product') ? 'Product' : currentType.includes('blog') ? 'Blog' : currentType.includes('ad') ? 'Ad' : currentType.replace('-',' ');
+    selInfo.style.display='block';
+    selText.textContent = `Slug: ${slug} | Type: ${infoType} | Link: ${url}`;
+  } else {
+    selInfo.style.display='none';
   }
 }
 
-document.getElementById('btn-copy').addEventListener('click', ()=>{
-  if(!window.generatedXML){ alert('Pehle generate hone do!'); return; }
-  navigator.clipboard.writeText(window.generatedXML);
-  alert('Copied! Ab sitemap.xml me paste karo');
-});
-document.getElementById('btn-download').addEventListener('click', ()=>{
-  if(!window.generatedXML){ alert('Pehle generate hone do!'); return; }
-  const blob = new Blob([window.generatedXML], {type:'application/xml'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'sitemap.xml';
-  a.click();
-  URL.revokeObjectURL(url);
+tabs.forEach(t=>{
+  t.addEventListener('click', ()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    currentType = t.dataset.type;
+    updateAll();
+  });
 });
 
-generate();
+pid.addEventListener('input', ()=>{
+  // Manual typing - clear auto data
+  delete pid.dataset.realId;
+  delete pid.dataset.realTitle;
+  delete pid.dataset.realSlug;
+  updateAll();
+});
+
+document.getElementById('btn-copy-id').addEventListener('click', ()=>{
+  if(!pid.value.trim()){ alert('Pehle slug ya title likho!'); return; }
+  navigator.clipboard.writeText(pid.value.trim());
+  alert('Slug copied: ' + createSlug(pid.value.trim()));
+});
+
+updateAll();
+
+// LIVE AUTO FETCH - NEW TOP
+const liveList = document.getElementById('live-list');
+const liveCount = document.getElementById('live-count');
+
+let allItems = [];
+
+function renderLive(){
+  // Sort newest first by createdAt
+  allItems.sort((a,b)=> (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+  const top20 = allItems.slice(0,30);
+  liveCount.textContent = allItems.length + ' live';
+  if(top20.length===0){
+    liveList.innerHTML = '<div class="small" style="padding:20px;text-align:center">No approved items yet. Firebase me approve karo, yahan top pe ayega.</div>';
+    return;
+  }
+  liveList.innerHTML = top20.map(item=>{
+    let badgeClass='badge-wg', badgeText=item.type||item.plan||'Link', title=item.name||item.title||'No Title', id=item.id;
+    let displayName = '';
+    let exampleText = '';
+    if(item.collection==='products'){ 
+      badgeClass='badge-prod'; badgeText='Product'; 
+      displayName = item.title || 'No Title';
+      exampleText = `ID: ${id} | Title: ${displayName}`;
+    }
+    else if(item.collection==='blogs'){ 
+      badgeClass='badge-blog'; badgeText='Blog'; 
+      displayName = item.title || 'No Title';
+      exampleText = `ID: ${id} | Title: ${displayName}`;
+    }
+    else if(item.collection==='ads'){ 
+      badgeClass='badge-ad'; badgeText='Ad'; 
+      displayName = item.title || 'No Title';
+      exampleText = `ID: ${id} | Title: ${displayName} | WA: ${item.whatsapp||''}`;
+    }
+    else {
+      if(item.type==='whatsapp-group'){ badgeClass='badge-wg'; badgeText='WA Group'; displayName = item.name || 'No Name'; exampleText = `ID: ${id} | Group: ${displayName}`; }
+      else if(item.type==='whatsapp-channel'){ badgeClass='badge-wc'; badgeText='WA Channel'; displayName = item.name || 'No Name'; exampleText = `ID: ${id} | Channel: ${displayName}`; }
+      else if(item.type==='telegram-group'){ badgeClass='badge-tg'; badgeText='TG Group'; displayName = item.name || 'No Name'; exampleText = `ID: ${id} | Group: ${displayName}`; }
+      else if(item.type==='telegram-channel'){ badgeClass='badge-tc'; badgeText='TG Channel'; displayName = item.name || 'No Name'; exampleText = `ID: ${id} | Channel: ${displayName}`; }
+      else { displayName = item.name || item.title || 'No Name'; exampleText = `ID: ${id} | Name: ${displayName}`; }
+    }
+    let isNew = (Date.now()/1000 - (item.createdAt?.seconds||0)) < 86400;
+    return `<div class="live-item" data-id="${id}" data-collection="${item.collection}" data-type="${item.type||''}" title="${exampleText}">
+      ${isNew?'<div class="new-dot" title="New 24h"></div>':''}
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <span class="badge ${badgeClass}">${badgeText}</span>
+          <span class="live-id" style="max-width:140px">${id}</span>
+          ${isNew?'<span style="background:#ef4444;color:white;font-size:8px;padding:2px 5px;border-radius:999px;font-weight:900">NEW</span>':''}
+        </div>
+        <div class="live-title" style="margin-top:4px;white-space:normal;line-height:1.3" title="${displayName}">${displayName}</div>
+        <div style="font-size:10px;color:#64748b;margin-top:2px;word-break:break-all">${exampleText}</div>
+      </div>
+      <span style="font-size:10px;color:#94a3b8;white-space:nowrap">${item.createdAt? new Date(item.createdAt.seconds*1000).toLocaleDateString() : ''}</span>
+    </div>`;
+  }).join('');
+
+  // Add click listeners - FIXED: Auto paste Name/Title in bottom box
+  document.querySelectorAll('.live-item').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const id = el.dataset.id;
+      const col = el.dataset.collection;
+      const type = el.dataset.type;
+      // Find the actual item from allItems to get its Name/Title
+      const clickedItem = allItems.find(it => it.id === id);
+      const displayName = clickedItem ? (clickedItem.title || clickedItem.name || id) : id;
+      const slug = createSlug(displayName) || id;
+      
+      // Baqi same rakha, lekin niche box me Naam/Title auto paste hoga + slug bhi
+      pid.value = displayName; // Niche box me direct Naam/Title paste
+      
+      // Store both for URL generation
+      pid.dataset.realId = id;
+      pid.dataset.realTitle = displayName;
+      pid.dataset.realSlug = slug;
+      
+      // Auto select tab based on collection/type
+      if(col==='products'){ currentType='product'; }
+      else if(col==='blogs'){ currentType='blog'; }
+      else if(col==='ads'){ currentType='ad'; }
+      else if(type){ 
+        if(configs[type]) currentType=type;
+        else if(type.includes('whatsapp') && type.includes('group')) currentType='whatsapp-group';
+        else if(type.includes('whatsapp') && type.includes('channel')) currentType='whatsapp-channel';
+        else if(type.includes('telegram') && type.includes('group')) currentType='telegram-group';
+        else if(type.includes('telegram') && type.includes('channel')) currentType='telegram-channel';
+      }
+      tabs.forEach(x=>{
+        x.classList.remove('active');
+        if(x.dataset.type===currentType) x.classList.add('active');
+      });
+      updateAll();
+      // Show title in selected info box
+      const selInfo = document.getElementById('selected-info');
+      const selText = document.getElementById('selected-text');
+      if(selInfo && selText){
+        selInfo.style.display='block';
+        selText.innerHTML = `<b>ID:</b> ${id}<br><b>${col==='products' || col==='blogs' || col==='ads' ? 'Title' : 'Name'}:</b> ${displayName}<br><b>Slug:</b> ${slug}`;
+      }
+      window.scrollTo({top: document.getElementById('form-area').offsetTop - 20, behavior:'smooth'});
+      // Flash effect
+      pid.style.borderColor='#16a34a';
+      pid.style.background='#f0fdf4';
+      setTimeout(()=>{
+        pid.style.borderColor='#0f172a';
+        pid.style.background='white';
+      }, 1000);
+    });
+  });
+}
+
+// Fetch links (approved only)
+const qLinks = query(collection(db, 'links'), where('status','==','approved'), limit(100));
+onSnapshot(qLinks, (snap)=>{
+  const arr = snap.docs.map(d=>({ id: d.id, collection:'links', ...d.data() }));
+  // Remove old links from allItems
+  allItems = allItems.filter(x=>x.collection!=='links').concat(arr);
+  renderLive();
+}, err=>{ console.error('links err', err); });
+
+// Products
+onSnapshot(collection(db, 'products'), (snap)=>{
+  const arr = snap.docs.map(d=>({ id: d.id, collection:'products', ...d.data() }));
+  allItems = allItems.filter(x=>x.collection!=='products').concat(arr);
+  renderLive();
+});
+
+// Blogs
+onSnapshot(collection(db, 'blogs'), (snap)=>{
+  const arr = snap.docs.map(d=>({ id: d.id, collection:'blogs', ...d.data() }));
+  allItems = allItems.filter(x=>x.collection!=='blogs').concat(arr);
+  renderLive();
+});
+
+// Ads
+onSnapshot(collection(db, 'ads'), (snap)=>{
+  const arr = snap.docs.map(d=>({ id: d.id, collection:'ads', ...d.data() }));
+  allItems = allItems.filter(x=>x.collection!=='ads').concat(arr);
+  renderLive();
+});
 </script>
 </body>
 </html>
