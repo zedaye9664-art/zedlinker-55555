@@ -1,16 +1,166 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ZedLinker - AUTO Sitemap Generator - Firebase Live</title>
+<style>
+body{font-family:Inter,sans-serif;background:#f8fafc;padding:16px;max-width:900px;margin:0 auto}
+.card{background:white;padding:18px;border-radius:16px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:14px;border:1px solid #eef2f7}
+.btn{background:#111827;color:white;padding:12px 18px;border-radius:10px;border:none;font-weight:800;cursor:pointer;margin:5px}
+.btn-blue{background:#2563eb}
+.btn-green{background:#16a34a}
+pre{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:12px;overflow:auto;max-height:500px;white-space:pre-wrap;word-break:break-all;font-size:11px}
+.small{font-size:12px;color:#64748b;line-height:1.5}
+</style>
+</head>
+<body>
+<h1>🗺️ ZedLinker AUTO Sitemap Generator - LIVE Firebase</h1>
+<div class="card" style="background:#fffbeb;border-color:#fde68a">
+<b>🔥 FIXED:</b> Aapke screenshot wala error <code>meta line 3 and head mismatch</code> isi liye aaya kyuki maine sitemap.xml me HTML tag lagaya tha. Ab ye generator <b>100% valid XML</b> banayega!<br/><br/>
+<b>Auto Kaise Kaam Karega:</b><br/>
+- Jab aap naya WhatsApp Group/Channel, Telegram Group/Channel, Blog, Product approve karoge<br/>
+- Yahan aao → <b>Generate</b> dabao → Naya sitemap.xml banega saare naye links ke saath<br/>
+- Download karke GitHub pe sitemap.xml replace kardo → Google auto SEO karega!
+</div>
+
+<div class="card">
+<h3>⚡ Live Firebase Stats</h3>
+<div id="stats" class="small">🔄 Firebase se loading... 2-3 sec...</div>
+</div>
+
+<div class="card">
+<h3>📋 Generated VALID sitemap.xml</h3>
+<div>
+<button class="btn btn-blue" id="btn-copy">📋 Copy XML</button>
+<button class="btn btn-green" id="btn-download">⬇️ Download sitemap.xml (VALID)</button>
+</div>
+<pre id="output">Loading Firebase data...</pre>
+</div>
+
+<div class="card">
+<h3>📌 Deploy Steps - 1 Min</h3>
+<div class="small">
+1. <b>Download sitemap.xml</b> dabao (ye valid XML hoga, error nahi ayega)<br/>
+2. GitHub repo me root me <b>sitemap.xml</b> ko replace karo<br/>
+3. Commit: <code>Auto sitemap with all approved links</code><br/>
+4. <b>zedlinker.store/sitemap.xml</b> kholo - ab XML tree sahi dikhega, error nahi!<br/>
+5. Google Search Console me already submitted hai, Google daily check karega<br/><br/>
+<b>Har baar naya link approve karne ke baad:</b> Is generator ko kholo → Download → GitHub pe replace → Ho gaya auto!
+</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBADCK9FGULv7NPzMitfNq-_Wh8LFjf4nk",
+  authDomain: "zedlinker-55555.firebaseapp.com",
+  projectId: "zedlinker-55555",
+  storageBucket: "zedlinker-55555.firebasestorage.app",
+  messagingSenderId: "710796734605",
+  appId: "1:710796734605:web:fc6be519c1876fa77a32c4"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+function createSlug(text){
+  if(!text) return '';
+  return text.toString().toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').substring(0,80).replace(/^-|-$/g,'');
+}
+function escapeXml(s){ return s.replace(/[<>&'"]/g, c=>({ '<':'&lt;','>':'&gt;','&':'&amp;',"'":'&apos;','"':'&quot;'}[c])); }
+
+async function generate(){
+  const statsEl = document.getElementById('stats');
+  const outEl = document.getElementById('output');
+  const today = new Date().toISOString().split('T')[0];
+  let urls = [];
+  urls.push({loc:'https://zedlinker.store/', lastmod:today, changefreq:'daily', priority:'1.0'});
+  urls.push({loc:'https://zedlinker.store/ads.html', lastmod:today, changefreq:'daily', priority:'0.9'});
+  const categories = ['Education','Entertainment','Business','Jobs','Technology','News','Gaming'];
+  categories.forEach(cat=>{ urls.push({loc:`https://zedlinker.store/?category=${encodeURIComponent(cat)}`, lastmod:today, changefreq:'daily', priority:'0.8'}); });
+  const types = ['whatsapp_group','whatsapp_channel','telegram_group','telegram_channel'];
+  types.forEach(t=>{ urls.push({loc:`https://zedlinker.store/?type=${t}`, lastmod:today, changefreq:'daily', priority:'0.8'}); });
+
+  try{
+    const [linksSnap, productsSnap, blogsSnap, adsSnap] = await Promise.all([
+      getDocs(query(collection(db, 'links'), where('status','==','approved'))),
+      getDocs(collection(db, 'products')),
+      getDocs(collection(db, 'blogs')),
+      getDocs(query(collection(db, 'ads'), where('status','==','approved')))
+    ]);
+    const links = linksSnap.docs.map(d=>({id:d.id, ...d.data()}));
+    const products = productsSnap.docs.map(d=>({id:d.id, ...d.data()}));
+    const blogs = blogsSnap.docs.map(d=>({id:d.id, ...d.data()}));
+    const ads = adsSnap.docs.map(d=>({id:d.id, ...d.data()}));
+
+    statsEl.innerHTML = `✅ <b>${links.length} Links</b> | <b>${products.length} Products</b> | <b>${blogs.length} Blogs</b> | <b>${ads.length} Ads</b> = Total <b>${urls.length + links.length*2 + products.length*2 + blogs.length*2 + ads.length} URLs</b> — Ab ye saare sitemap.xml me ayenge!`;
+
+    links.forEach(link=>{
+      const slug = createSlug(link.name || link.title || '') || link.id;
+      const type = link.type || 'whatsapp_group';
+      const lastmod = link.createdAt?.toDate ? link.createdAt.toDate().toISOString().split('T')[0] : today;
+      urls.push({loc:`https://zedlinker.store/link/${slug}-${link.id}`, lastmod, changefreq:'weekly', priority:'0.8'});
+      urls.push({loc:`https://zedlinker.store/?type=${type}&id=${link.id}`, lastmod, changefreq:'weekly', priority:'0.8'});
+    });
+    products.forEach(p=>{
+      const slug = createSlug(p.title || '') || p.id;
+      const lastmod = p.createdAt?.toDate ? p.createdAt.toDate().toISOString().split('T')[0] : today;
+      urls.push({loc:`https://zedlinker.store/product.html?id=${p.id}`, lastmod, changefreq:'weekly', priority:'0.8'});
+      urls.push({loc:`https://zedlinker.store/product/${slug}-${p.id}`, lastmod, changefreq:'weekly', priority:'0.8'});
+    });
+    blogs.forEach(b=>{
+      const slug = createSlug(b.title || '') || b.id;
+      const lastmod = b.createdAt?.toDate ? b.createdAt.toDate().toISOString().split('T')[0] : today;
+      urls.push({loc:`https://zedlinker.store/blog-details.html?id=${b.id}`, lastmod, changefreq:'weekly', priority:'0.9'});
+      urls.push({loc:`https://zedlinker.store/blog/${slug}-${b.id}`, lastmod, changefreq:'weekly', priority:'0.9'});
+    });
+    ads.forEach(ad=>{
+      const slug = createSlug(ad.title || '') || ad.id;
+      const lastmod = ad.createdAt?.toDate ? ad.createdAt.toDate().toISOString().split('T')[0] : today;
+      urls.push({loc:`https://zedlinker.store/ad-details.html?id=${ad.id}`, lastmod, changefreq:'weekly', priority:'0.7'});
+    });
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://zedlinker.store/</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://zedlinker.store/ads.html</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://zedlinker.store/?category=Education</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://zedlinker.store/?category=Entertainment</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://zedlinker.store/?category=Business</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://zedlinker.store/?category=Jobs</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://zedlinker.store/?category=Technology</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://zedlinker.store/?category=News</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://zedlinker.store/?category=Gaming</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://zedlinker.store/?type=whatsapp_group</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://zedlinker.store/?type=whatsapp_channel</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://zedlinker.store/?type=telegram_group</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://zedlinker.store/?type=telegram_channel</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-</urlset>
+`;
+    urls.forEach(u=>{
+      xml += `  <url>
+    <loc>${escapeXml(u.loc)}</loc>
+    <lastmod>${u.lastmod}</lastmod>
+    <changefreq>${u.changefreq}</changefreq>
+    <priority>${u.priority}</priority>
+  </url>
+`;
+    });
+    xml += `</urlset>`;
+    outEl.textContent = xml;
+    window.generatedXML = xml;
+  }catch(e){
+    statsEl.innerHTML = '❌ Error: ' + e.message;
+    outEl.textContent = 'Error: ' + e.message;
+    console.error(e);
+  }
+}
+
+document.getElementById('btn-copy').addEventListener('click', ()=>{
+  if(!window.generatedXML){ alert('Pehle generate hone do!'); return; }
+  navigator.clipboard.writeText(window.generatedXML);
+  alert('Copied! Ab sitemap.xml me paste karo');
+});
+document.getElementById('btn-download').addEventListener('click', ()=>{
+  if(!window.generatedXML){ alert('Pehle generate hone do!'); return; }
+  const blob = new Blob([window.generatedXML], {type:'application/xml'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'sitemap.xml';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+generate();
+</script>
+</body>
+</html>
