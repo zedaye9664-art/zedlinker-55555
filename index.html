@@ -15,6 +15,9 @@
     #instant-loader .i-logo{width:44px;height:44px;background:#FF4B8B;border-radius:16px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:22px}
     #instant-loader .i-skel{animation:pulse 1.2s infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+    @keyframes zedSpin{to{transform:rotate(360deg)}}
+    @keyframes zedCounterReset{from{opacity:.99}to{opacity:1}}
     #instant-loader .i-hero{margin:24px 16px 0;background:linear-gradient(135deg,#FF4B8B,#8BC34A);border-radius:28px;padding:24px;color:white}
     #instant-loader .i-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:16px}
     #instant-loader .i-card{background:white;border:1px solid #f0f0f0;border-radius:20px;padding:16px;height:140px}
@@ -134,10 +137,22 @@
 </head>
 <body>
   <div id="instant-loader">
+
+    <div id="zed-10s-wait" aria-live="polite" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92%,420px);background:rgba(255,255,255,.98);border:2px solid #FF4B8B;border-radius:28px;padding:26px 22px;text-align:center;box-shadow:0 18px 60px rgba(255,75,139,.18);z-index:2">
+      <div style="width:76px;height:76px;margin:0 auto 14px;border:7px solid #ffe0eb;border-top-color:#FF4B8B;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:zedSpin 1s linear infinite">
+        <span id="zed-countdown" style="font-size:25px;font-weight:900;color:#FF4B8B;animation:zedCounterReset .01s linear">10</span>
+      </div>
+      <div style="font-size:23px;font-weight:900;color:#222">Please wait 10 seconds</div>
+      <div style="margin-top:7px;font-size:14px;line-height:1.6;color:#666">Your WhatsApp & Telegram links are loading. They will appear shortly.</div>
+      <div style="margin-top:16px;height:9px;background:#ffeaf2;border-radius:20px;overflow:hidden">
+        <div id="zed-progress" style="height:100%;width:0%;background:linear-gradient(90deg,#FF4B8B,#8BC34A);border-radius:20px;transition:width 1s linear"></div>
+      </div>
+      <div id="zed-wait-status" style="margin-top:10px;font-size:12px;font-weight:700;color:#FF4B8B">Loading links...</div>
+    </div>
     <div class="i-header">
       <div class="i-logo">Z</div>
       <div style="font-weight:800;font-size:18px">ZED LINKER</div>
-      <div style="margin-left:auto;background:#FF4B8B;color:white;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700">Loading 0.5s...</div>
+      <div style="margin-left:auto;background:#FF4B8B;color:white;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700">Please wait 10 seconds...</div>
     </div>
     <div class="i-hero i-skel">
       <div style="font-size:26px;font-weight:900;line-height:1.1">Discover Best WhatsApp & Telegram Communities</div>
@@ -168,13 +183,29 @@
         var el = document.getElementById('instant-loader');
         if(el){ el.style.transition='opacity 0.3s'; el.style.opacity='0'; setTimeout(function(){el.style.display='none'},300); }
       };
-      // Hide after React root appears OR after 2.5s max
+      // Keep the loading screen visible for a clear 10-second countdown.
+      var seconds = 10;
+      var counter = document.getElementById('zed-countdown');
+      var progress = document.getElementById('zed-progress');
+      var status = document.getElementById('zed-wait-status');
+      var countdown = setInterval(function(){
+        seconds--;
+        if(counter) counter.textContent = String(Math.max(seconds, 0));
+        if(progress) progress.style.width = ((10 - Math.max(seconds, 0)) * 10) + '%';
+        if(status) status.textContent = seconds > 0 ? ('Please wait... ' + seconds + ' seconds remaining') : 'Opening your links...';
+        if(seconds <= 0){
+          clearInterval(countdown);
+          setTimeout(hide, 250);
+        }
+      }, 1000);
+      // Do not hide early when React mounts; the 10-second wait is intentional.
       var check = setInterval(function(){
-        if(document.getElementById('root') && document.getElementById('root').children.length>0){ clearInterval(check); setTimeout(hide, 80); }
+        if(document.getElementById('root') && document.getElementById('root').children.length>0){
+          clearInterval(check);
+        }
       }, 50);
-      setTimeout(function(){ clearInterval(check); hide(); }, 3000);
-      // Also hide on window load
-      window.addEventListener('load', function(){ setTimeout(hide, 500); });
+      // Safety fallback if something fails to mount.
+      setTimeout(function(){ clearInterval(check); clearInterval(countdown); hide(); }, 15000);
     })();
   </script>
 
