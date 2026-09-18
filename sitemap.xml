@@ -1,75 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Auto Sitemap</title></head>
-<body>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyBADCK9FGULv7NPzMitfNq-_Wh8LFjf4nk",
-  authDomain: "zedlinker-55555.firebaseapp.com",
-  projectId: "zedlinker-55555",
-  storageBucket: "zedlinker-55555.firebasestorage.app",
-  messagingSenderId: "710796734605",
-  appId: "1:710796734605:web:fc6be519c1876fa77a32c4"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-function createSlug(text){
-  if(!text) return '';
-  return text.toString().toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').substring(0,80).replace(/^-|-$/g,'');
-}
-function escapeXml(s){ return s.replace(/[<>&'"]/g, c=>({ '<':'&lt;','>':'&gt;','&':'&amp;',"'":'&apos;','"':'&quot;'}[c])); }
-async function buildSitemap(){
-  const today = new Date().toISOString().split('T')[0];
-  let urls = [];
-  urls.push({loc:'https://zedlinker.store/', lastmod:today, changefreq:'daily', priority:'1.0'});
-  urls.push({loc:'https://zedlinker.store/ads.html', lastmod:today, changefreq:'daily', priority:'0.9'});
-  const categories = ['Education','Entertainment','Business','Jobs','Technology','News','Gaming'];
-  categories.forEach(cat=>{ urls.push({loc:`https://zedlinker.store/?category=${encodeURIComponent(cat)}`, lastmod:today, changefreq:'daily', priority:'0.8'}); });
-  const types = ['whatsapp_group','whatsapp_channel','telegram_group','telegram_channel'];
-  types.forEach(t=>{ urls.push({loc:`https://zedlinker.store/?type=${t}`, lastmod:today, changefreq:'daily', priority:'0.8'}); });
-  try{
-    const [linksSnap, productsSnap, blogsSnap, adsSnap] = await Promise.all([
-      getDocs(query(collection(db, 'links'), where('status','==','approved'))),
-      getDocs(collection(db, 'products')),
-      getDocs(collection(db, 'blogs')),
-      getDocs(query(collection(db, 'ads'), where('status','==','approved')))
-    ]);
-    linksSnap.forEach(doc=>{
-      const d = doc.data(); const id = doc.id; const name = d.name || d.title || id;
-      const slug = createSlug(name) || id; const type = d.type || 'whatsapp_group';
-      const lastmod = d.createdAt?.toDate ? d.createdAt.toDate().toISOString().split('T')[0] : today;
-      urls.push({loc:`https://zedlinker.store/link/${slug}-${id}`, lastmod, changefreq:'weekly', priority:'0.8'});
-      urls.push({loc:`https://zedlinker.store/?type=${type}&id=${id}`, lastmod, changefreq:'weekly', priority:'0.8'});
-    });
-    productsSnap.forEach(doc=>{
-      const d = doc.data(); const id = doc.id; const title = d.title || id;
-      const slug = createSlug(title) || id;
-      const lastmod = d.createdAt?.toDate ? d.createdAt.toDate().toISOString().split('T')[0] : today;
-      urls.push({loc:`https://zedlinker.store/product.html?id=${id}`, lastmod, changefreq:'weekly', priority:'0.8'});
-      urls.push({loc:`https://zedlinker.store/product/${slug}-${id}`, lastmod, changefreq:'weekly', priority:'0.8'});
-    });
-    blogsSnap.forEach(doc=>{
-      const d = doc.data(); const id = doc.id; const title = d.title || id;
-      const slug = createSlug(title) || id;
-      const lastmod = d.createdAt?.toDate ? d.createdAt.toDate().toISOString().split('T')[0] : today;
-      urls.push({loc:`https://zedlinker.store/blog-details.html?id=${id}`, lastmod, changefreq:'weekly', priority:'0.9'});
-      urls.push({loc:`https://zedlinker.store/blog/${slug}-${id}`, lastmod, changefreq:'weekly', priority:'0.9'});
-    });
-    adsSnap.forEach(doc=>{
-      const d = doc.data(); const id = doc.id; const title = d.title || id;
-      const slug = createSlug(title) || id;
-      const lastmod = d.createdAt?.toDate ? d.createdAt.toDate().toISOString().split('T')[0] : today;
-      urls.push({loc:`https://zedlinker.store/ad-details.html?id=${id}`, lastmod, changefreq:'weekly', priority:'0.7'});
-    });
-  }catch(e){ console.error(e); }
-  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-  urls.forEach(u=>{ xml += `  <url>\n    <loc>${escapeXml(u.loc)}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>\n`; });
-  xml += `</urlset>`;
-  document.open(); document.write(xml); document.close();
-}
-buildSitemap();
-</script>
-</body>
-</html>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://zedlinker.store/</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://zedlinker.store/ads.html</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://zedlinker.store/?category=Education</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=Entertainment</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=Business</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=Jobs</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=Technology</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=News</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?category=Gaming</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?type=whatsapp_group</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?type=whatsapp_channel</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?type=telegram_group</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://zedlinker.store/?type=telegram_channel</loc><lastmod>2026-05-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+</urlset>
