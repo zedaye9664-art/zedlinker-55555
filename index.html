@@ -27,7 +27,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Zed Linker | WhatsApp & Telegram Links Directory</title>
+  <title>Zed Linker</title>
   <meta name="description" content="Zed Linker is a directory for discovering and sharing WhatsApp Groups, WhatsApp Channels, Telegram Groups, and Telegram Channels." />
   <meta name="application-name" content="Zed Linker" />
   <meta name="apple-mobile-web-app-title" content="Zed Linker" />
@@ -583,6 +583,141 @@ window.renderBlogSEO = function(blog){
       }
     });
   }
+</script>
+
+
+<script type="module">
+/* ZED LINKER: LIVE ANNOUNCEMENT BANNER + ADMIN EDITOR
+   Uses Firestore settings/announcement. Existing site UI and data flows remain untouched. */
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+(() => {
+  const CFG = {
+    apiKey: "AIzaSyBADCK9FGULv7NPzMitfNq-_Wh8LFjf4nk",
+    authDomain: "zedlinker-55555.firebaseapp.com",
+    projectId: "zedlinker-55555",
+    storageBucket: "zedlinker-55555.firebasestorage.app",
+    messagingSenderId: "710796734605",
+    appId: "1:710796734605:web:fc6be519c1876fa77a32c4"
+  };
+  const ADMIN = "zedaye9664@gmail.com";
+  let app, db, auth;
+  try {
+    app = getApps().length ? getApp() : initializeApp(CFG);
+    db = getFirestore(app);
+    auth = getAuth(app);
+  } catch (e) { console.warn("Zed announcement Firebase init:", e); return; }
+
+  const esc = (v) => String(v ?? "").replace(/[&<>\"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const validUrl = (v) => {
+    if (!v) return "";
+    try { const u = new URL(v, location.origin); return /^https?:$/.test(u.protocol) ? u.href : ""; } catch { return ""; }
+  };
+
+  function mountPublicBanner(data = {}) {
+    const old = document.getElementById("zed-live-announcement");
+    if (old) old.remove();
+    if (data.enabled === false) return;
+    const title = data.title || "New Offer 🎉";
+    const message = data.message || "Stay updated with the latest offers and announcements from Zed Linker.";
+    const linkText = data.linkText || "Explore Now";
+    const linkUrl = validUrl(data.linkUrl || "");
+    const el = document.createElement("section");
+    el.id = "zed-live-announcement";
+    el.style.cssText = "width:100%;max-width:1280px;margin:10px auto 0;padding:0 16px;box-sizing:border-box;";
+    el.innerHTML = `<div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#fff0f6,#fff9fb 48%,#eff9e9);border:1px solid #ffd0e1;border-radius:18px;box-shadow:0 8px 24px rgba(255,75,139,.10);padding:12px 44px 12px 14px;display:flex;align-items:center;gap:11px;">
+      <div style="width:38px;height:38px;flex:0 0 38px;border-radius:13px;background:#FF4B8B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 5px 12px rgba(255,75,139,.22)">🎉</div>
+      <div style="min-width:0;flex:1">
+        <div style="font-weight:900;font-size:14px;color:#222;line-height:1.2">${esc(title)}</div>
+        <div style="margin-top:3px;font-size:12px;line-height:1.45;color:#666">${esc(message)}</div>
+      </div>
+      ${linkUrl ? `<a href="${esc(linkUrl)}" target="_blank" rel="noopener noreferrer" style="flex:0 0 auto;background:#FF4B8B;color:#fff;text-decoration:none;font-size:11px;font-weight:800;padding:8px 11px;border-radius:12px">${esc(linkText)}</a>` : ""}
+    </div>`;
+    const close = document.createElement("button");
+    close.type = "button";
+    close.setAttribute("aria-label","Close announcement");
+    close.textContent = "×";
+    close.style.cssText = "position:absolute;right:10px;top:8px;width:25px;height:25px;border:0;background:transparent;color:#888;font-size:20px;line-height:25px;cursor:pointer";
+    close.onclick = () => el.remove();
+    el.firstElementChild.appendChild(close);
+
+    const header = document.querySelector("header");
+    if (header && header.parentNode) header.insertAdjacentElement("afterend", el);
+    else if (document.getElementById("root")) document.getElementById("root").prepend(el);
+  }
+
+  let latest = {};
+  const announcementRef = doc(db, "settings", "announcement");
+  onSnapshot(announcementRef, snap => {
+    latest = snap.exists() ? (snap.data() || {}) : {enabled:true,title:"New Offer 🎉",message:"Stay updated with the latest offers and announcements from Zed Linker."};
+    // Do not show the public banner while the admin dashboard is visible.
+    const isAdminView = /admin/i.test(location.pathname) || !!document.querySelector("[data-zed-admin-dashboard]") || !![...document.querySelectorAll("h1,h2,h3")].find(x => /admin dashboard/i.test(x.textContent||""));
+    if (!isAdminView) mountPublicBanner(latest);
+  }, () => {
+    // Keep a useful default banner if Firestore is temporarily unavailable.
+    mountPublicBanner({enabled:true,title:"New Offer 🎉",message:"Stay updated with the latest offers and announcements from Zed Linker."});
+  });
+
+  function adminCard() {
+    if (document.getElementById("zed-announcement-admin-card")) return;
+    const headings = [...document.querySelectorAll("h1,h2,h3,h4")];
+    const settingsHeading = headings.find(x => (x.textContent||"").trim() === "Settings Management");
+    if (!settingsHeading) return;
+    const settingsBox = settingsHeading.closest("div.bg-white") || settingsHeading.parentElement?.parentElement;
+    if (!settingsBox) return;
+
+    const card = document.createElement("div");
+    card.id = "zed-announcement-admin-card";
+    card.style.cssText = "margin-top:16px;background:#fff;border:1px solid #f1d5e1;border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.04)";
+    card.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><div style="font-size:16px;font-weight:900;color:#222">Announcement / New Alert</div><div style="font-size:12px;color:#777;margin-top:3px">Control the public announcement box without changing the rest of the website.</div></div><span id="zed-ann-status" style="font-size:11px;font-weight:800;padding:5px 9px;border-radius:999px;background:#ecfdf3;color:#15803d">Live</span></div>
+      <div style="margin-top:14px;display:grid;gap:10px">
+        <label style="font-size:12px;font-weight:800;color:#444"><input id="zed-ann-enabled" type="checkbox" style="margin-right:7px;accent-color:#FF4B8B"> Show announcement</label>
+        <input id="zed-ann-title" placeholder="New Offer 🎉" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #ddd;border-radius:13px;font-size:13px">
+        <textarea id="zed-ann-message" rows="3" placeholder="Write your announcement..." style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #ddd;border-radius:13px;font-size:13px;resize:vertical"></textarea>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><input id="zed-ann-link-text" placeholder="Button text (optional)" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #ddd;border-radius:13px;font-size:13px"><input id="zed-ann-link-url" placeholder="Button URL (optional)" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #ddd;border-radius:13px;font-size:13px"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button id="zed-ann-save" style="background:#FF4B8B;color:#fff;border:0;border-radius:13px;padding:10px 16px;font-weight:900;font-size:13px;cursor:pointer">Save New Alert</button><button id="zed-ann-hide" style="background:#f3f4f6;color:#333;border:0;border-radius:13px;padding:10px 16px;font-weight:800;font-size:13px;cursor:pointer">Hide Announcement</button></div>
+      </div>`;
+    settingsBox.parentNode.insertBefore(card, settingsBox.nextSibling);
+
+    const $ = id => document.getElementById(id);
+    $("zed-ann-enabled").checked = latest.enabled !== false;
+    $("zed-ann-title").value = latest.title || "New Offer 🎉";
+    $("zed-ann-message").value = latest.message || "Stay updated with the latest offers and announcements from Zed Linker.";
+    $("zed-ann-link-text").value = latest.linkText || "";
+    $("zed-ann-link-url").value = latest.linkUrl || "";
+
+    $("zed-ann-save").onclick = async () => {
+      const user = auth.currentUser;
+      if (!user || (user.email||"").toLowerCase() !== ADMIN) { alert("Admin authorization required."); return; }
+      const btn=$("zed-ann-save"), status=$("zed-ann-status");
+      btn.disabled=true; btn.textContent="Saving..."; status.textContent="Saving"; status.style.background="#fff7ed"; status.style.color="#c2410c";
+      try {
+        await setDoc(announcementRef, {
+          enabled: $("zed-ann-enabled").checked,
+          title: $("zed-ann-title").value.trim() || "New Offer 🎉",
+          message: $("zed-ann-message").value.trim() || "Stay updated with the latest offers and announcements from Zed Linker.",
+          linkText: $("zed-ann-link-text").value.trim(),
+          linkUrl: validUrl($("zed-ann-link-url").value.trim()),
+          updatedAt: serverTimestamp()
+        }, {merge:true});
+        status.textContent="Saved"; status.style.background="#ecfdf3"; status.style.color="#15803d";
+      } catch(e) { status.textContent="Save failed"; status.style.background="#fef2f2"; status.style.color="#b91c1c"; alert("Could not save announcement. Check Firestore settings rules."); }
+      finally { btn.disabled=false; btn.textContent="Save New Alert"; }
+    };
+    $("zed-ann-hide").onclick = async () => {
+      const user=auth.currentUser;
+      if (!user || (user.email||"").toLowerCase() !== ADMIN) { alert("Admin authorization required."); return; }
+      try { await setDoc(announcementRef,{enabled:false,updatedAt:serverTimestamp()},{merge:true}); } catch(e) { alert("Could not hide announcement."); }
+    };
+  }
+
+  onAuthStateChanged(auth, () => setTimeout(adminCard, 350));
+  const observer = new MutationObserver(() => { setTimeout(adminCard, 50); });
+  observer.observe(document.body, {childList:true,subtree:true});
+  setTimeout(adminCard, 1200);
+})();
 </script>
 
 </body>
