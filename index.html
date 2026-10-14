@@ -451,7 +451,8 @@ window.renderBlogSEO = function(blog){
 </script>
 
 <style id="zed-user-enhancements">
-#zed-email-help{position:fixed;right:16px;bottom:82px;z-index:9999;background:#d92d70;color:#fff;border-radius:999px;padding:12px 16px;display:flex;gap:8px;align-items:center;font:700 14px Arial,sans-serif;box-shadow:0 8px 24px #0002;text-decoration:none}
+#zed-email-help{position:fixed;left:16px;bottom:82px;z-index:9999;background:#2563eb;color:#fff;border-radius:999px;padding:12px 16px;display:flex;gap:8px;align-items:center;font:700 14px Arial,sans-serif;box-shadow:0 8px 24px #0002;text-decoration:none}
+#zed-wa-help{position:fixed;right:16px;bottom:82px;z-index:9999;background:#128c4a;color:#fff;border-radius:999px;padding:12px 16px;display:flex;gap:8px;align-items:center;font:700 14px Arial,sans-serif;box-shadow:0 8px 24px #0002;text-decoration:none}
 #zed-message-admin{position:fixed;left:16px;bottom:82px;z-index:9999;background:#2563eb;color:#fff;border:0;border-radius:999px;padding:12px 16px;display:flex;gap:8px;align-items:center;font:700 14px Arial,sans-serif;box-shadow:0 8px 24px #0002;cursor:pointer}
 #zed-message-modal{display:none;position:fixed;inset:0;background:#0009;z-index:10001;align-items:center;justify-content:center;padding:16px}
 #zed-message-modal.open{display:flex}
@@ -463,10 +464,10 @@ window.renderBlogSEO = function(blog){
 #zed-admin-messages{position:fixed;inset:5% 3%;z-index:10002;background:white;border:2px solid #d92d70;border-radius:18px;padding:20px;overflow:auto;display:none;font:14px Arial;box-shadow:0 8px 40px #0004}
 #zed-admin-messages.open{display:block}
 #zed-admin-msg-open.admin-inline{display:block!important;position:static!important;right:auto!important;top:auto!important;z-index:auto!important;margin:16px 0 10px;background:#d92d70!important;color:#fff!important}#zed-admin-messages.admin-inline{position:static!important;inset:auto!important;z-index:auto!important;margin:10px 0 18px;max-height:70vh;box-shadow:none!important}#zed-admin-messages.admin-inline.open{display:block!important}
-@media(max-width:480px){#zed-email-help,#zed-message-admin{padding:10px 12px;font-size:12px;bottom:76px}#zed-email-help{right:10px}#zed-message-admin{left:10px}}
+@media(max-width:480px){#zed-email-help,#zed-wa-help{padding:10px 12px;font-size:12px;bottom:76px}#zed-email-help{left:10px}#zed-wa-help{right:10px}}
 </style>
+<a id="zed-wa-help" href="https://wa.me/923710536394?text=Hello%21%20I%20need%20help%20with%20Zed%20Linker.%20Please%20note%3A%20Before%20messaging%20us%2C%20save%20this%20WhatsApp%20number%20in%20your%20contacts%20as%20Zed%20Linker%20by%20tapping%20Add%20to%20Contacts%20at%20the%20top%20of%20this%20chat.%20After%20saving%20the%20number%2C%20send%20your%20message.%20We%20may%20not%20be%20able%20to%20reply%20if%20you%20do%20not%20save%20our%20number.%20Thank%20you%21" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Help for Zed Linker"><span>🟢</span> WhatsApp Help</a>
 <a id="zed-email-help" href="mailto:zedai9664@gmail.com?subject=Zed%20Linker%20Help" aria-label="Email Zed Linker Help"><span>✉️</span> Email Help</a>
-<button id="zed-message-admin" type="button">💬 Message to Admin</button>
 <div id="zed-message-modal" role="dialog" aria-modal="true" aria-labelledby="zed-message-title">
  <div id="zed-message-card"><button id="zed-message-close" type="button" style="float:right;border:0;border-radius:50%;padding:6px 11px;font-size:20px">×</button>
  <h2 id="zed-message-title" style="color:#d92d70;margin:0">Message to Admin</h2>
@@ -738,7 +739,7 @@ const app=getApps().length?getApps()[0]:initializeApp(cfg),db=getFirestore(app),
 const modal=document.getElementById("zed-message-modal"),form=document.getElementById("zed-message-form"),status=document.getElementById("zed-msg-status"),historyBox=document.getElementById("zed-user-chat-history");
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let activeThread=localStorage.getItem("zedLinkerChatThread")||"";
-document.getElementById("zed-message-admin").onclick=()=>{modal.classList.add("open");if(activeThread)watchUserHistory(activeThread)};
+const messageButton=document.getElementById("zed-message-admin");if(messageButton)messageButton.onclick=()=>{modal.classList.add("open");if(activeThread)watchUserHistory(activeThread)};
 document.getElementById("zed-message-close").onclick=()=>modal.classList.remove("open");modal.addEventListener("click",e=>{if(e.target===modal)modal.classList.remove("open")});
 function watchUserHistory(threadId){onSnapshot(doc(db,"userMessages",threadId),snap=>{if(!snap.exists()){historyBox.textContent="Your sent messages and admin replies will appear here.";return}const x=snap.data();window.__zedChatMessages=x.messages||[];const items=[...(x.messages||[]),...(x.replies||[]).map(r=>({...r,from:"Admin"}))].sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));historyBox.innerHTML=items.map(m=>`<div style="margin:7px 0;padding:9px;border-radius:10px;background:${m.from==="Admin"?'#f0fdf4':'#fff1f6'}"><b>${esc(m.from||"You")}</b><div style="white-space:pre-wrap;margin-top:4px">${esc(m.message)}</div><small>${esc(m.createdAt?.toDate?.().toLocaleString()||"Just now")}</small></div>`).join("")||"No messages yet.";},e=>{historyBox.textContent="Chat history unavailable. Please check Firestore rules.";});}
 form.addEventListener("submit",async e=>{e.preventDefault();const b=form.querySelector("button[type=submit]"),name=form.name.value.trim(),whatsapp=form.whatsapp.value.trim(),message=form.message.value.trim();if(!name||!whatsapp||!message)return;b.disabled=true;status.textContent="Sending…";
