@@ -187,7 +187,7 @@
 
     <div id="zed-10s-wait" aria-live="polite" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92%,420px);background:rgba(255,255,255,.98);border:2px solid #FF4B8B;border-radius:28px;padding:26px 22px;text-align:center;box-shadow:0 18px 60px rgba(255,75,139,.18);z-index:2">
       <div id="zed-loader-logo-wrap"><div id="zed-loader-logo" class="i-logo" aria-label="Zed Linker Z logo"></div></div>
-      <div style="font-size:23px;font-weight:900;color:#222">Please Wait for 10 Seconds</div>
+      <div style="font-size:23px;font-weight:900;color:#222">Please Wait for 15 Seconds</div>
       <div style="margin-top:7px;font-size:14px;line-height:1.6;color:#666">Loading links, products, blogs and other website content from Firebase. Please wait until everything is ready.</div>
       <div style="margin-top:16px;height:9px;background:#ffeaf2;border-radius:20px;overflow:hidden">
         <div id="zed-progress" style="height:100%;width:0%;background:linear-gradient(90deg,#FF4B8B,#8BC34A);border-radius:20px;transition:width .45s ease"></div>
@@ -197,7 +197,7 @@
     <div class="i-header">
       <div class="i-logo" aria-label="Zed Linker logo"></div>
       <div style="font-weight:800;font-size:18px">ZED LINKER</div>
-      <div style="margin-left:auto;background:#FF4B8B;color:white;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700">Please wait 10 seconds...</div>
+      <div style="margin-left:auto;background:#FF4B8B;color:white;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700">Please wait 15 seconds...</div>
     </div>
     <div class="i-hero i-skel">
       <div style="font-size:26px;font-weight:900;line-height:1.1">Discover Best WhatsApp & Telegram Communities</div>
@@ -222,10 +222,10 @@
     </div>
   </div>
   <script>
-    // Keep the animated Z logo visible for at least 10 seconds and until the page data settles.
+    // Keep the animated Z logo visible for at least 15 seconds and until the page data settles.
     (function(){
       var startedAt = Date.now();
-      var minimumWaitMs = 800;
+      var minimumWaitMs = 15000;
       var fallbackMs = 60000;
       var root = document.getElementById('root');
       var progress = document.getElementById('zed-progress');
@@ -462,6 +462,7 @@ window.renderBlogSEO = function(blog){
 #zed-message-card .z-send{background:#d92d70;color:white;border:0;border-radius:10px;padding:12px 18px;font-weight:700;margin-top:12px}
 #zed-admin-messages{position:fixed;inset:5% 3%;z-index:10002;background:white;border:2px solid #d92d70;border-radius:18px;padding:20px;overflow:auto;display:none;font:14px Arial;box-shadow:0 8px 40px #0004}
 #zed-admin-messages.open{display:block}
+#zed-admin-msg-open.admin-inline{display:block!important;position:static!important;right:auto!important;top:auto!important;z-index:auto!important;margin:16px 0 10px;background:#d92d70!important;color:#fff!important}#zed-admin-messages.admin-inline{position:static!important;inset:auto!important;z-index:auto!important;margin:10px 0 18px;max-height:70vh;box-shadow:none!important}#zed-admin-messages.admin-inline.open{display:block!important}
 @media(max-width:480px){#zed-email-help,#zed-message-admin{padding:10px 12px;font-size:12px;bottom:76px}#zed-email-help{right:10px}#zed-message-admin{left:10px}}
 </style>
 <a id="zed-email-help" href="mailto:zedai9664@gmail.com?subject=Zed%20Linker%20Help" aria-label="Email Zed Linker Help"><span>✉️</span> Email Help</a>
@@ -744,7 +745,8 @@ form.addEventListener("submit",async e=>{e.preventDefault();const b=form.querySe
 try{if(activeThread){await updateDoc(doc(db,"userMessages",activeThread),{name,whatsapp,updatedAt:serverTimestamp(),messages:[...(window.__zedChatMessages||[]),{from:"You",message,createdAt:new Date()}]});}else{const ref=await addDoc(collection(db,"userMessages"),{name,whatsapp,messages:[{from:"You",message,createdAt:new Date()}],replies:[],createdAt:serverTimestamp(),updatedAt:serverTimestamp(),status:"unread"});activeThread=ref.id;localStorage.setItem("zedLinkerChatThread",activeThread);}
 window.__zedChatMessages=undefined;status.textContent="Message sent. Replies and chat history will appear below.";form.message.value="";watchUserHistory(activeThread); }catch(err){console.error(err);status.textContent="Could not send: check Firestore rules or email zedai9664@gmail.com.";}finally{b.disabled=false;}});
 document.getElementById("zed-admin-msg-close").onclick=()=>document.getElementById("zed-admin-messages").classList.remove("open");document.getElementById("zed-admin-msg-open").onclick=()=>document.getElementById("zed-admin-messages").classList.add("open");
-onAuthStateChanged(auth,user=>{if((user?.email||"").toLowerCase()!==ADMIN)return;document.getElementById("zed-admin-msg-open").style.display="block";onSnapshot(query(collection(db,"userMessages"),orderBy("createdAt","desc")),snap=>{const root=document.getElementById("zed-admin-msg-list");if(snap.empty){root.textContent="No user messages yet.";return;}root.innerHTML=snap.docs.map(d=>{const x=d.data(),last=(x.messages||[]).slice(-1)[0]?.message||"";return `<article style="border:1px solid #eee;border-radius:12px;padding:14px;margin:12px 0"><b>Name:</b> ${esc(x.name)}<br><b>WhatsApp:</b> ${esc(x.whatsapp)}<br><b>Latest message:</b><div style="white-space:pre-wrap;margin:8px 0">${esc(last)}</div><div style="max-height:180px;overflow:auto;background:#fafafa;padding:8px;border-radius:8px">${[...(x.messages||[]),...(x.replies||[]).map(r=>({...r,from:"Admin"}))].map(m=>`<p style="margin:6px 0"><b>${esc(m.from||"You")}:</b> ${esc(m.message)}</p>`).join("")}</div><textarea id="reply-${d.id}" rows="2" placeholder="Write reply to this user" style="width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:9px;padding:9px;margin-top:10px"></textarea><button data-reply="${d.id}" style="background:#d92d70;color:white;border:0;border-radius:9px;padding:9px 13px;margin-top:7px;font-weight:bold">Reply to User</button><small style="display:block;margin-top:6px">${esc(x.createdAt?.toDate?.().toLocaleString()||"Just now")} · ${esc(x.status||"unread")}</small></article>`}).join("");root.querySelectorAll("[data-reply]").forEach(b=>b.onclick=async()=>{const id=b.dataset.reply,area=root.querySelector("#reply-"+CSS.escape(id)),message=area.value.trim();if(!message)return; b.disabled=true;try{const old=snap.docs.find(d=>d.id===id)?.data()||{};await updateDoc(doc(db,"userMessages",id),{replies:[...(old.replies||[]),{from:"Admin",message,createdAt:new Date()}],updatedAt:serverTimestamp(),status:"replied"});area.value="";}catch(e){alert("Reply failed. Check Firestore rules: "+e.message)}finally{b.disabled=false;}});},err=>{document.getElementById("zed-admin-msg-list").textContent="Messages could not load: "+err.message+" (Check Firestore rules).";});});
+function mountMessagesInsideDashboard(){const card=document.getElementById("zed-admin-control-card");if(!card)return false;const openBtn=document.getElementById("zed-admin-msg-open"),panel=document.getElementById("zed-admin-messages");if(openBtn&&!card.contains(openBtn)){openBtn.classList.add("admin-inline");card.appendChild(openBtn);}if(panel&&!card.contains(panel)){panel.classList.add("admin-inline");card.appendChild(panel);}return true;}
+onAuthStateChanged(auth,user=>{if((user?.email||"").toLowerCase()!==ADMIN)return;const openBtn=document.getElementById("zed-admin-msg-open");openBtn.style.display="block";mountMessagesInsideDashboard();const adminMountObserver=new MutationObserver(()=>{mountMessagesInsideDashboard();});adminMountObserver.observe(document.body,{childList:true,subtree:true});onSnapshot(query(collection(db,"userMessages"),orderBy("createdAt","desc")),snap=>{const root=document.getElementById("zed-admin-msg-list");if(snap.empty){root.textContent="No user messages yet.";return;}root.innerHTML=snap.docs.map(d=>{const x=d.data(),last=(x.messages||[]).slice(-1)[0]?.message||"";return `<article style="border:1px solid #eee;border-radius:12px;padding:14px;margin:12px 0"><b>Name:</b> ${esc(x.name)}<br><b>WhatsApp:</b> ${esc(x.whatsapp)}<br><b>Latest message:</b><div style="white-space:pre-wrap;margin:8px 0">${esc(last)}</div><div style="max-height:180px;overflow:auto;background:#fafafa;padding:8px;border-radius:8px">${[...(x.messages||[]),...(x.replies||[]).map(r=>({...r,from:"Admin"}))].map(m=>`<p style="margin:6px 0"><b>${esc(m.from||"You")}:</b> ${esc(m.message)}</p>`).join("")}</div><textarea id="reply-${d.id}" rows="2" placeholder="Write reply to this user" style="width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:9px;padding:9px;margin-top:10px"></textarea><button data-reply="${d.id}" style="background:#d92d70;color:white;border:0;border-radius:9px;padding:9px 13px;margin-top:7px;font-weight:bold">Reply to User</button><small style="display:block;margin-top:6px">${esc(x.createdAt?.toDate?.().toLocaleString()||"Just now")} · ${esc(x.status||"unread")}</small></article>`}).join("");root.querySelectorAll("[data-reply]").forEach(b=>b.onclick=async()=>{const id=b.dataset.reply,area=root.querySelector("#reply-"+CSS.escape(id)),message=area.value.trim();if(!message)return; b.disabled=true;try{const old=snap.docs.find(d=>d.id===id)?.data()||{};await updateDoc(doc(db,"userMessages",id),{replies:[...(old.replies||[]),{from:"Admin",message,createdAt:new Date()}],updatedAt:serverTimestamp(),status:"replied"});area.value="";}catch(e){alert("Reply failed. Check Firestore rules: "+e.message)}finally{b.disabled=false;}});},err=>{document.getElementById("zed-admin-msg-list").textContent="Messages could not load: "+err.message+" (Check Firestore rules).";});});
 </script>
 
 </body>
